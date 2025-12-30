@@ -3,7 +3,7 @@ layout: post
 title: "Gerstner Waves Unity"
 ---
 
-# UNITY. The Waterline & Underwater Effect
+# Ocean Shader
 ![shader_preview](https://github.com/user-attachments/assets/158e0db6-c761-473b-b1be-e137b3e6992d)  
 [📂 View Source](https://github.com/Veltrynox/plateau-steward/tree/main/Assets/Materials/FX/Ocean)
 
@@ -27,6 +27,7 @@ To achieve realistic small-scale details (glitter, micro-waves) without destroyi
 
 One thing I added is a displacement flattening out in the horizon. I helps with speculars and Zdepth tests and allows to have a shorter computed mesh.
 
+## Fog:
 The depth pass is pretty streightforward and consists only of two main layers:
 <img width="1467" alt="Screenshot 2025-12-30 at 11 16 00 AM" src="https://github.com/user-attachments/assets/40d10fb1-da61-46a6-9839-a74e00fa5486" />
 
