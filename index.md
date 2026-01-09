@@ -11,10 +11,8 @@ title: Portfolio
 ### 🌊 Ocean Shader
 ![shader_preview](https://github.com/user-attachments/assets/158e0db6-c761-473b-b1be-e137b3e6992d)  
 
-<details>
+<details markdown="1">
 <summary><strong>📖 Read Technical Breakdown (Compute Shader, Split View, Tesselation)</strong></summary>
-
-<br>
 
 #### Gerstner Waves:
 Instead of calculating Gerstner Wave math inside the Vertex Shader for every vertex, I moved the simulation to a Compute Shader.
