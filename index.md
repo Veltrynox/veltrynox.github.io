@@ -10,6 +10,12 @@ title: Portfolio
 
 ### 🌊 Ocean Shader
 ![shader_preview](https://github.com/user-attachments/assets/158e0db6-c761-473b-b1be-e137b3e6992d)  
+
+<details>
+<summary><strong>📖 Read Technical Breakdown (Compute Shader, Split View, Tesselation)</strong></summary>
+
+<br>
+
 #### Gerstner Waves:
 Instead of calculating Gerstner Wave math inside the Vertex Shader for every vertex, I moved the simulation to a Compute Shader.
 The Compute Shader outputs a Displacement Map and NormalMap. These textures are set as global shader variables and act as a single source of truth.
@@ -32,6 +38,8 @@ One thing I added is a displacement flattening out in the horizon. I helps with 
 | **Final** | <img src="https://github.com/user-attachments/assets/40d10fb1-da61-46a6-9839-a74e00fa5486" width="400"> |
 | **Linear Depth** | <img src="https://github.com/user-attachments/assets/3a2126f8-67e6-466c-aea3-32a754918642" width="400"> |
 | **Depth below Y** | <img src="https://github.com/user-attachments/assets/1e435222-ce6b-4bfe-b4fc-c3478528eea5" width="400"> |
+
+</details>
 
 [📂 View Source](https://github.com/Veltrynox/plateau-steward/tree/main/Assets/Materials/FX/Ocean)
 
