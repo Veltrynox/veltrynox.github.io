@@ -1,6 +1,3 @@
 title: My Blog
 description: My first GitHub Pages + Jekyll site
-remote_theme: jekyll/minima
-
-minima:
-  skin: dark
+theme: jekyll-theme-slate
