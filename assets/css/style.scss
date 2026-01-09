@@ -1,0 +1,18 @@
+---
+---
+@import "{{ site.theme }}";
+
+// Убираем верхнюю плашку с кнопкой "View on GitHub"
+header {
+    display: none !important;
+}
+
+// Убираем футер (текст про "Hosted on GitHub Pages")
+footer {
+    display: none !important;
+}
+
+// Убираем лишние отступы, которые остались от хедера
+section {
+    padding-top: 20px !important;
+}
