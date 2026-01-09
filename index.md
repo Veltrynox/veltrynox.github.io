@@ -3,7 +3,7 @@ layout: default
 title: Portfolio
 ---
 
-## 📬 Contact & Links
+#### 📬 Contact & Links
 **[Email Me](ilarin75@gmail.com)** | **[Download Resume (PDF)](#)** | **[GitHub](https://github.com/Veltrynox)**
 
 ---
@@ -27,13 +27,11 @@ To achieve realistic small-scale details (glitter, micro-waves) without destroyi
 
 One thing I added is a displacement flattening out in the horizon. I helps with speculars and Zdepth tests and allows to have a shorter computed mesh.
 
-## Fog:
-The depth pass is pretty streightforward and consists only of two main layers:
-| Pass | |
-| :--- | :---|
-| Final | <img width="400" alt="Screenshot 2025-12-30 at 11 16 00 AM" src="https://github.com/user-attachments/assets/40d10fb1-da61-46a6-9839-a74e00fa5486" /> |
-| Scene Linear Depth layer | <img width="400" alt="Screenshot 2025-12-30 at 11 15 53 AM" src="https://github.com/user-attachments/assets/3a2126f8-67e6-466c-aea3-32a754918642" /> |
-| The Scene Depth Below the Y axis | <img width="400" alt="Screenshot 2025-12-30 at 11 16 40 AM" src="https://github.com/user-attachments/assets/1e435222-ce6b-4bfe-b4fc-c3478528eea5" /> |
+| Pass | Preview |
+| :--- | :--- |
+| **Final** | <img src="https://github.com/user-attachments/assets/40d10fb1-da61-46a6-9839-a74e00fa5486" width="400"> |
+| **Linear Depth** | <img src="https://github.com/user-attachments/assets/3a2126f8-67e6-466c-aea3-32a754918642" width="400"> |
+| **Depth below Y** | <img src="https://github.com/user-attachments/assets/1e435222-ce6b-4bfe-b4fc-c3478528eea5" width="400"> |
 
 [📂 View Source](https://github.com/Veltrynox/plateau-steward/tree/main/Assets/Materials/FX/Ocean)
 
