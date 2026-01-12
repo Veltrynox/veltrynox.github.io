@@ -50,9 +50,8 @@ A simple tower defence game using Unity. Featuring wave-based enemy spawning, to
 * [Play the game](https://veltrynox.itch.io/ironclash-alpha)
 
 #### Space Shooter  
-![space shooter](https://github.com/Veltrynox/space_shooter/blob/main/media/output.gif)  
-A 2D space shooter game prototype built with Unity. Featuring an HLSL background shader that follows the camera, Levels with enemies, asteroids, and debris spawners using simple Instantiate. A simple enemy sistem driven by "AI".
-* [View Source Code](https://github.com/Veltrynox/space_shooter)
+![space shooter](https://raw.githubusercontent.com/Veltrynox/space_shooter/main/media/output.gif)  
+A 2D space shooter game prototype built with Unity...
 
 ---
 
@@ -60,18 +59,17 @@ A 2D space shooter game prototype built with Unity. Featuring an HLSL background
 #### Unity Games
 * [📂 View Source](https://github.com/Veltrynox/gamedev_course_homework_archive)  
 
-| Project    | Preview                           | | |
-| ---------- | --------------------------------- |-|-|
-| Helix Jump | <img src="https://github.com/Veltrynox/gamedev_course_homework_archive/blob/main/helixjump/images/gameplay.gif" width="150" height="300" />   | Bass Blast | <img src="https://github.com/Veltrynox/gamedev_course_homework_archive/blob/main/ball_blast/content/gameplay.gif" width="400" height="250" /> |
-| Adventure  | <img src="https://github.com/Veltrynox/gamedev_course_homework_archive/blob/main/content/adventure.gif" width="300" height="300" />           | | |
+| Project | Preview | Project | Preview |
+| :--- | :--- | :--- | :--- |
+| **Helix Jump** | <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/helixjump/images/gameplay.gif" width="150" /> | **Ball Blast** | <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/ball_blast/content/gameplay.gif" width="300" /> |
+| **Adventure** | <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/adventure.gif" width="250" /> | | |
 
 ---
 
 | Project | Preview | Project | Preview |
 | :--- | :--- | :--- | :--- |
-| **Pacman** (SFML) | ![](https://github.com/Veltrynox/gamedev_course_homework_archive/blob/main/content/pacman.gif) | **FindCouple** (SFML) | ![](https://github.com/Veltrynox/gamedev_course_homework_archive/blob/main/content/find_couple.gif) |
-| **Arkanoid** (SFML) | ![](https://github.com/Veltrynox/gamedev_course_homework_archive/blob/main/content/arkanoid.gif) | **Pong Clone** (LOVE2D) | ![](https://github.com/Veltrynox/gamedev_course_homework_archive/blob/main/content/pong_banner.jpg) |
----
+| **Pacman** | ![](https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/pacman.gif) | **FindCouple** | ![](https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/find_couple.gif) |
+| **Arkanoid** | ![](https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/arkanoid.gif) | **Pong Clone** | ![](https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/pong_banner.jpg) |
 
 ### 📬 Get In Touch
 Feel free to reach out for collaborations or inquiries!
