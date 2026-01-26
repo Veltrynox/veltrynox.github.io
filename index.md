@@ -153,6 +153,7 @@ title: Portfolio
   <div style="flex: 1; min-width: 300px;">
     <h3>Houdini Rocks Generator</h3>
     <p>Houdini Unity Engine procedural rocks generator that uses Unity's terrain.</p>
+    <a href="https://github.com/Veltrynox/misc_samples/blob/main/houdini/sop_ps.terraingeo.1.0.hdalc">📂 View Source</a>  
   </div>
   <div style="flex: 1; min-width: 300px;">
     <img src="https://github.com/user-attachments/assets/05bc4baf-3e63-4303-b1c2-be1ea4deb0f3" style="width: 100%; border-radius: 6px;">
@@ -163,6 +164,7 @@ title: Portfolio
   <div style="flex: 1; min-width: 300px;">
     <h3>Houdini Tunnel Generator</h3>
     <p>Houdini Python State tool for generating tunnel skeletons.</p>
+    <a href="https://github.com/Veltrynox/misc_samples/blob/main/houdini/houdiniTonnelGeneratorState">📂 View Source</a>  
   </div>
   <div style="flex: 1; min-width: 300px;">
     <img src="https://github.com/user-attachments/assets/415a7b56-7b06-491f-b6a9-4298a1622b28" style="width: 100%; border-radius: 6px;">
