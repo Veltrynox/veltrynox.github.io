@@ -165,7 +165,7 @@ title: Portfolio
     <p>Houdini Python State tool for generating tunnel skeletons.</p>
   </div>
   <div style="flex: 1; min-width: 300px;">
-    <img src="https://github.com/user-attachments/assets/37af5832-0f65-4112-b4f4-9957c3f198b1" style="width: 100%; border-radius: 6px;">
+    <img src="https://github.com/user-attachments/assets/415a7b56-7b06-491f-b6a9-4298a1622b28" style="width: 100%; border-radius: 6px;">
   </div>
 </div>
 
@@ -179,3 +179,4 @@ title: Portfolio
     <a href="https://github.com/Veltrynox"><strong>GitHub</strong></a>
   </p>
 </div>
+
