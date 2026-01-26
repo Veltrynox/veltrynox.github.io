@@ -67,6 +67,7 @@ Optimized simulation by moving Gerstner math from the Vertex Shader to a Compute
 | :--- | :--- | :--- |
 | **SandPile (C++)** | **Cellular Automata:** A C++ implementation of the Abelian Sandpile Model. <br> [📂 View Source](https://github.com/Veltrynox/misc_samples/tree/main/OpenCL/sandpile_algorithm) |<img width="620" height="613" alt="unnamed" src="https://github.com/user-attachments/assets/b90e06e2-ef6f-41de-aba2-c4a26697257a" /> |
 | **Houdini Rocks Generator** | Houdini Unity Engine procedural rocks generator that uses Unity's terrain <br> | ![rock_generator_preview](https://github.com/user-attachments/assets/6ef7bd06-e7ee-4f62-8445-578a88280b63) |
+| **Houdini Tonnel Generator Tool** | Houdini Python State tool for generating tonnels skeletons | ![tonnel_tool](https://github.com/user-attachments/assets/37af5832-0f65-4112-b4f4-9957c3f198b1) |
 
 
 ---
