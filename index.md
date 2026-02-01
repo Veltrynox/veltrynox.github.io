@@ -135,8 +135,19 @@ title: Portfolio
 </details>
 
 <hr>
-
 <h2>🛠️ Tools</h2>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px; align-items: center;">
+  <div style="flex: 1; min-width: 300px;">
+    <h3>Procedural Rock Arch Generator</h3>
+    <p><strong>Unity & Houdini:</strong> A procedural tool for generating complex rock arches and natural formations directly within Unity using Houdini Engine.</p>
+    <a href="https://youtu.be/U2MAFMaHZb4" style="margin-right: 15px;">📺 Watch Demo</a>
+    <a href="https://github.com/Veltrynox/misc_samples">📂 View Source</a>
+  </div>
+  <div style="flex: 1; min-width: 300px;">
+    <img src="https://github.com/user-attachments/assets/13191263-b3d9-480b-8201-2f62d315451c" style="width: 100%; border-radius: 6px;" alt="Procedural Rock Arch Generator Screenshot">
+  </div>
+</div>
 
 <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px; align-items: center;">
   <div style="flex: 1; min-width: 300px;">
@@ -181,4 +192,5 @@ title: Portfolio
     <a href="https://github.com/Veltrynox"><strong>GitHub</strong></a>
   </p>
 </div>
+
 
