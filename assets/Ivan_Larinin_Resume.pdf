@@ -1,0 +1,117 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 7090 >>
+stream
+0.050 0.080 0.140 rg
+0.0 720.0 612.0 72.0 re f
+BT /F2 22 Tf 0.950 0.970 1.000 rg 36.0 755.0 Td (IVAN LARININ) Tj ET
+BT /F2 11 Tf 0.220 0.740 0.970 rg 36.0 735.0 Td (Technical Artist / Real-Time FX & Procedural TD) Tj ET
+BT /F1 8.5 Tf 0.400 0.450 0.550 rg 36.0 700.0 Td (Location: Stockholm / London / Hamburg \(Open to Relocate / Remote\)  |  Email: ilarin75@gmail.com) Tj ET
+BT /F1 8.5 Tf 0.400 0.450 0.550 rg 36.0 687.0 Td (GitHub: github.com/Veltrynox  |  ArtStation: artstation.com/ivanlarinin) Tj ET
+0.850 0.880 0.920 RG
+1.0 w
+36.0 677.0 m 576.0 677.0 l S
+BT /F2 11 Tf 0.040 0.450 0.750 rg 36.0 660.0 Td (PROFESSIONAL SUMMARY) Tj ET
+0.040 0.450 0.750 RG
+1.2 w
+36.0 657.0 m 576.0 657.0 l S
+BT /F1 9 Tf 0.200 0.200 0.200 rg 36.0 643.0 Td (VES Award-winning Technical Director & FX Artist with extensive experience in procedural systems, physical simulations,) Tj ET
+BT /F1 9 Tf 0.200 0.200 0.200 rg 36.0 631.5 Td (and pipeline tooling. Combining a strong artistic eye with deep expertise in Houdini \(VEX/Python\), Unity \(C#, Compute Shaders,) Tj ET
+BT /F1 9 Tf 0.200 0.200 0.200 rg 36.0 620.0 Td (HLSL\), and Unreal Engine \(Houdini Engine HDAs\). Focused on real-time graphics, GPU instancing, Vertex Animation Textures \(VAT\),) Tj ET
+BT /F1 9 Tf 0.200 0.200 0.200 rg 36.0 608.5 Td (and optimized environment set dressing tools for real-time interactive applications.) Tj ET
+BT /F2 11 Tf 0.040 0.450 0.750 rg 36.0 589.0 Td (TECHNICAL TOOLKIT) Tj ET
+0.040 0.450 0.750 RG
+1.2 w
+36.0 586.0 m 576.0 586.0 l S
+BT /F2 9 Tf 0.100 0.100 0.100 rg 36.0 572.0 Td (Game Engines & Real-Time:) Tj ET
+BT /F1 9 Tf 0.250 0.250 0.250 rg 165.0 572.0 Td (Unity Engine, Unreal Engine, Houdini Engine \(HDA Integration\), HLSL / Compute Shaders, GPU Instancing, VAT.) Tj ET
+BT /F2 9 Tf 0.100 0.100 0.100 rg 36.0 558.5 Td (Procedural & FX Solvers:) Tj ET
+BT /F1 9 Tf 0.250 0.250 0.250 rg 165.0 558.5 Td (Houdini \(VEX, Python, HDAs\), FLIP Water Dynamics, Vellum, Pyro, Bullet RBD, Procedural City & Terrain HDAs.) Tj ET
+BT /F2 9 Tf 0.100 0.100 0.100 rg 36.0 545.0 Td (Programming & Scripting:) Tj ET
+BT /F1 9 Tf 0.250 0.250 0.250 rg 165.0 545.0 Td (C++, C#, Python, VEX, HLSL, OpenCL, Git.) Tj ET
+BT /F2 11 Tf 0.040 0.450 0.750 rg 36.0 529.0 Td (GAMEDEV & PROCEDURAL PROJECTS SHOWCASE) Tj ET
+0.040 0.450 0.750 RG
+1.2 w
+36.0 526.0 m 576.0 526.0 l S
+BT /F2 9.5 Tf 0.080 0.200 0.400 rg 36.0 512.0 Td (Laminaria - GPU Instanced Procedural Tool) Tj ET
+BT /F2 8 Tf 0.300 0.500 0.700 rg 330.0 512.0 Td ([Unity, Houdini FX, VAT]) Tj ET
+BT /F2 9 Tf 0.200 0.500 0.800 rg 46.0 500.5 Td (-) Tj ET
+BT /F1 8.5 Tf 0.200 0.200 0.200 rg 56.0 500.5 Td (Built a Unity GPU-instanced procedural tool for scattering animated Laminaria prefabs.) Tj ET
+BT /F2 9 Tf 0.200 0.500 0.800 rg 46.0 490.0 Td (-) Tj ET
+BT /F1 8.5 Tf 0.200 0.200 0.200 rg 56.0 490.0 Td (Integrated Vertex Animation Textures \(VAT\) authored in Houdini FX for high-fidelity real-time deformation.) Tj ET
+BT /F2 9 Tf 0.200 0.500 0.800 rg 46.0 479.5 Td (-) Tj ET
+BT /F1 8.5 Tf 0.200 0.200 0.200 rg 56.0 479.5 Td (Automated placement logic enabling efficient environment set dressing with optimized GPU-driven animation data.) Tj ET
+BT /F2 9.5 Tf 0.080 0.200 0.400 rg 36.0 465.5 Td (Ocean Shader & Real-Time Water Simulation) Tj ET
+BT /F2 8 Tf 0.300 0.500 0.700 rg 330.0 465.5 Td ([Compute Shader, HLSL, Unity]) Tj ET
+BT /F2 9 Tf 0.200 0.500 0.800 rg 46.0 454.0 Td (-) Tj ET
+BT /F1 8.5 Tf 0.200 0.200 0.200 rg 56.0 454.0 Td (Moved Gerstner wave simulation to GPU Compute Shaders to decouple simulation cost from surface geometry.) Tj ET
+BT /F2 9 Tf 0.200 0.500 0.800 rg 46.0 443.5 Td (-) Tj ET
+BT /F1 8.5 Tf 0.200 0.200 0.200 rg 56.0 443.5 Td (Implemented distance-based Hull/Domain tessellation shaders and camera near-plane split-view rendering.) Tj ET
+BT /F2 9 Tf 0.200 0.500 0.800 rg 46.0 433.0 Td (-) Tj ET
+BT /F1 8.5 Tf 0.200 0.200 0.200 rg 56.0 433.0 Td (Generated global displacement and normal maps consumed by buoyancy physics and post-processing depth fog.) Tj ET
+BT /F2 9.5 Tf 0.080 0.200 0.400 rg 36.0 419.0 Td (Procedural Building & City Generator) Tj ET
+BT /F2 8 Tf 0.300 0.500 0.700 rg 330.0 419.0 Td ([Unreal Engine, Houdini Engine]) Tj ET
+BT /F2 9 Tf 0.200 0.500 0.800 rg 46.0 407.5 Td (-) Tj ET
+BT /F1 8.5 Tf 0.200 0.200 0.200 rg 56.0 407.5 Td (Created interactive Houdini Engine HDAs for Unreal Engine to procedurally generate building geometry.) Tj ET
+BT /F2 9 Tf 0.200 0.500 0.800 rg 46.0 397.0 Td (-) Tj ET
+BT /F1 8.5 Tf 0.200 0.200 0.200 rg 56.0 397.0 Td (Automated layout distributions and modular architectural assets directly inside the game viewport.) Tj ET
+BT /F2 9.5 Tf 0.080 0.200 0.400 rg 36.0 383.0 Td (Houdini Engine Environment Utilities) Tj ET
+BT /F2 8 Tf 0.300 0.500 0.700 rg 330.0 383.0 Td ([Unity, Houdini Engine]) Tj ET
+BT /F2 9 Tf 0.200 0.500 0.800 rg 46.0 371.5 Td (-) Tj ET
+BT /F1 8.5 Tf 0.200 0.200 0.200 rg 56.0 371.5 Td (Developed procedural rock arch generation and terrain rock scattering HDAs integrated into Unity Terrain.) Tj ET
+BT /F2 9.5 Tf 0.080 0.200 0.400 rg 36.0 357.5 Td (SandPile Cellular Automata) Tj ET
+BT /F2 8 Tf 0.300 0.500 0.700 rg 330.0 357.5 Td ([C++, OpenCL]) Tj ET
+BT /F2 9 Tf 0.200 0.500 0.800 rg 46.0 346.0 Td (-) Tj ET
+BT /F1 8.5 Tf 0.200 0.200 0.200 rg 56.0 346.0 Td (Programmed a high-performance C++ implementation of the Abelian Sandpile Model utilizing OpenCL acceleration.) Tj ET
+BT /F2 11 Tf 0.040 0.450 0.750 rg 36.0 328.0 Td (VFX & STUDIO EXPERIENCE) Tj ET
+0.040 0.450 0.750 RG
+1.2 w
+36.0 325.0 m 576.0 325.0 l S
+BT /F2 9.5 Tf 0.100 0.100 0.100 rg 36.0 311.0 Td (Senior FX Artist / FX Technical Director) Tj ET
+BT /F1 8.5 Tf 0.400 0.400 0.400 rg 400.0 311.0 Td (Stockholm / London / Remote) Tj ET
+BT /F2 8.5 Tf 0.300 0.300 0.350 rg 36.0 299.5 Td (Top-Tier Visual Effects Studios \(DNEG, Sony Pictures Imageworks, Pixomondo\)) Tj ET
+BT /F2 9 Tf 0.200 0.500 0.800 rg 46.0 288.0 Td (-) Tj ET
+BT /F1 8.5 Tf 0.200 0.200 0.200 rg 56.0 288.0 Td (Owned complex FX sequences from concept to final output, managing references, lookdev, and simulation networks.) Tj ET
+BT /F2 9 Tf 0.200 0.500 0.800 rg 46.0 277.5 Td (-) Tj ET
+BT /F1 8.5 Tf 0.200 0.200 0.200 rg 56.0 277.5 Td (Built high-performance procedural networks and master presets in Houdini to empower cross-department utility.) Tj ET
+BT /F2 9 Tf 0.200 0.500 0.800 rg 46.0 267.0 Td (-) Tj ET
+BT /F1 8.5 Tf 0.200 0.200 0.200 rg 56.0 267.0 Td (Key Feature Credits: Dune \(VES Award-winning team\), Spider-Man: No Way Home, M3GAN, The Boys, Uncharted.) Tj ET
+BT /F2 11 Tf 0.040 0.450 0.750 rg 36.0 250.5 Td (HONORS & PUBLICATIONS) Tj ET
+0.040 0.450 0.750 RG
+1.2 w
+36.0 247.5 m 576.0 247.5 l S
+BT /F2 9 Tf 0.100 0.100 0.100 rg 36.0 233.5 Td (Visual Effects Society \(VES\) Award Winner) Tj ET
+BT /F1 8.5 Tf 0.300 0.300 0.300 rg 250.0 233.5 Td (- Outstanding Effects Simulations in a Photoreal Feature \(Dune\)) Tj ET
+BT /F2 9 Tf 0.100 0.100 0.100 rg 36.0 221.5 Td (Technical Writer & Contributor) Tj ET
+BT /F1 8.5 Tf 0.300 0.300 0.300 rg 190.0 221.5 Td (- 80 Level & Industry Publications \(Procedural setups & Houdini dynamics\)) Tj ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+6 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000251 00000 n 
+0000007393 00000 n 
+0000007463 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+7538
+%%EOF
