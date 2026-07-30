@@ -12,6 +12,7 @@ title: Ivan Larinin | Portfolio & Showcase
   </p>
   <div class="hero-links">
     <a href="mailto:ilarin75@gmail.com" class="btn btn-primary">✉️ Get In Touch</a>
+    <a href="https://www.artstation.com/ivanlarinin" target="_blank" rel="noopener" class="btn btn-secondary">🎨 ArtStation</a>
     <a href="https://github.com/Veltrynox" target="_blank" rel="noopener" class="btn btn-secondary">📂 GitHub Profile</a>
     <a href="#" class="btn btn-secondary">📄 Download Resume (PDF)</a>
   </div>
@@ -259,6 +260,7 @@ title: Ivan Larinin | Portfolio & Showcase
     <p>Feel free to reach out about game projects, shaders, or procedural tools!</p>
     <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
       <a href="mailto:ilarin75@gmail.com" class="btn btn-primary">✉️ Email Me</a>
+      <a href="https://www.artstation.com/ivanlarinin" target="_blank" rel="noopener" class="btn btn-secondary">🎨 ArtStation</a>
       <a href="https://github.com/Veltrynox" target="_blank" rel="noopener" class="btn btn-secondary">📂 GitHub</a>
       <a href="#" class="btn btn-secondary">📄 Resume (PDF)</a>
     </div>
