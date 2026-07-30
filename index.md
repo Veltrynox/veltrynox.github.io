@@ -1,196 +1,266 @@
 ---
 layout: default
-title: Portfolio
+title: Ivan Larinin | Portfolio & Showcase
 ---
 
-<div style="text-align: center; margin-bottom: 40px;">
-  <h5>📬 Contact & Links</h5>
-  <p>
-    <a href="mailto:ilarin75@gmail.com" style="margin-right: 15px;"><strong>✉️ Email Me</strong></a>
-    <a href="#" style="margin-right: 15px;"><strong>📄 Download Resume (PDF)</strong></a>
-    <a href="https://github.com/Veltrynox"><strong>GitHub</strong></a>
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-badge">✨ Personal Projects Showcase</div>
+  <h1 class="hero-title">Hi, I'm <span class="hero-title-gradient">Ivan Larinin</span></h1>
+  <p class="hero-subtitle">
+    Exploring game development, real-time shaders, procedural tooling, and performance-oriented programming.
   </p>
+  <div class="hero-links">
+    <a href="mailto:ilarin75@gmail.com" class="btn btn-primary">✉️ Get In Touch</a>
+    <a href="https://github.com/Veltrynox" target="_blank" rel="noopener" class="btn btn-secondary">📂 GitHub Profile</a>
+    <a href="#" class="btn btn-secondary">📄 Download Resume (PDF)</a>
+  </div>
+</section>
+
+<!-- Filter Controls -->
+<div class="filter-container">
+  <button class="filter-btn active" data-filter="all">All Projects</button>
+  <button class="filter-btn" data-filter="shaders">🎨 Shaders & Tech Art</button>
+  <button class="filter-btn" data-filter="procedural">🛠️ Houdini & Procedural</button>
+  <button class="filter-btn" data-filter="games">🎮 Games</button>
+  <button class="filter-btn" data-filter="tools">💻 Code & Tools</button>
 </div>
 
-<hr>
+<!-- Main Portfolio Grid -->
+<div class="grid">
 
-<h2>🎮 Games</h2>
+  <!-- Featured Shader: Ocean Shader -->
+  <section id="shaders" style="grid-column: 1 / -1; display: contents;">
+    <div class="card featured-card" data-category="shaders">
+      <div class="card-body featured-grid">
+        <div>
+          <div class="card-media-badge">FEATURED SHADER</div>
+          <h3 class="card-title" style="font-size: 1.6rem; margin-top: 0.5rem;">Ocean Shader (Gerstner Waves)</h3>
+          <p class="card-description">
+            GPU ocean simulation moving Gerstner math from Vertex Shader to a Compute Shader. Decouples simulation cost from geometry, generates global displacement & normal maps, and includes distance-based Tessellation (Hull/Domain shaders) and camera near-plane split view.
+          </p>
+          <div class="card-tags">
+            <span class="tag tag-shader">Compute Shader</span>
+            <span class="tag tag-shader">HLSL</span>
+            <span class="tag tag-unity">Unity</span>
+            <span class="tag tag-csharp">C#</span>
+            <span class="tag">Tessellation</span>
+          </div>
+          <div class="card-footer" style="padding-top: 1rem;">
+            <a href="https://github.com/Veltrynox/plateau-steward/tree/main/Assets/Materials/FX/Ocean" target="_blank" rel="noopener" class="btn btn-primary btn-sm">📂 View Source Code</a>
+            <button class="btn btn-secondary btn-sm" data-open-modal="ocean-shader-modal">📖 Technical Breakdown</button>
+          </div>
+        </div>
+        <div class="card-media" style="border-radius: var(--radius-md); box-shadow: 0 8px 25px rgba(0,0,0,0.4);">
+          <img src="https://github.com/user-attachments/assets/158e0db6-c761-473b-b1be-e137b3e6992d" alt="Ocean Shader Preview" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
 
-<div style="display: flex; flex-wrap: wrap; gap: 30px; margin-bottom: 40px; align-items: start;">
-  <div style="flex: 1; min-width: 300px;">
-    <a href="https://github.com/user-attachments/assets/29d94611-262b-4857-a648-915c840de7c9">
-      <img src="https://github.com/user-attachments/assets/29d94611-262b-4857-a648-915c840de7c9" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-    </a>
+  <!-- Laminaria VAT GPU Instancing (ArtStation Project II) -->
+  <div class="card" data-category="shaders">
+    <div class="card-media">
+      <span class="card-media-badge">TECH ART / SHADERS</span>
+      <img src="assets/media/laminaria.gif" alt="Laminaria VAT GPU Instancing Preview" loading="lazy">
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">Laminaria — GPU Instanced Procedural Tool (VAT)</h3>
+      <p class="card-description">
+        Unity-based GPU instanced procedural tool for generating scattered Laminaria prefabs. The system integrates Vertex Animation Textures (VAT) authored in Houdini FX to maintain high-fidelity deformation. Automated placement logic enables efficient environment set dressing with optimized GPU-driven animation data for real-time performance.
+      </p>
+      <div class="card-tags">
+        <span class="tag tag-unity">Unity</span>
+        <span class="tag tag-houdini">Houdini FX</span>
+        <span class="tag tag-shader">VAT</span>
+        <span class="tag">GPU Instancing</span>
+      </div>
+      <div class="card-footer">
+        <a href="https://www.artstation.com/artwork/bg9Zym" target="_blank" rel="noopener" class="btn btn-primary btn-sm">🎨 View on ArtStation</a>
+      </div>
+    </div>
   </div>
-  <div style="flex: 1; min-width: 300px;">
-    <h3>Tower Defense</h3>
-    <p><strong>Core Systems:</strong> Wave spawning, building, upgrades, and persistent data.</p>
-    <p>
-      <a href="https://github.com/Veltrynox/tower_defence">📂 <strong>Source Code</strong></a> | 
-      <a href="https://veltrynox.itch.io/ironclash-alpha">🎮 <strong>Play Game</strong></a>
-    </p>
-  </div>
+
+  <!-- Procedural Section & Houdini Engine Tools -->
+  <section id="procedural" style="grid-column: 1 / -1; display: contents;">
+    
+    <!-- Procedural City Generator (Unreal Engine) -->
+    <div class="card" data-category="procedural">
+      <div class="card-media">
+        <span class="card-media-badge">HOUDINI ENGINE</span>
+        <img src="assets/media/procedural_city.gif" alt="Procedural City Unreal Engine" loading="lazy">
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Procedural Building & City Generator</h3>
+        <p class="card-description">
+          Procedural building and city layout generator tool built using Houdini Engine for Unreal Engine. Generates modular architectural geometry and layout distributions interactively.
+        </p>
+        <div class="card-tags">
+          <span class="tag tag-houdini">Houdini Engine</span>
+          <span class="tag tag-csharp">Unreal Engine</span>
+          <span class="tag">Procedural City</span>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.artstation.com/artwork/41bWB1" target="_blank" rel="noopener" class="btn btn-primary btn-sm">🎨 View on ArtStation</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Houdini Engine Environment Utilities (Rock Arch & Terrain Rocks) -->
+    <div class="card" data-category="procedural">
+      <div class="card-media">
+        <span class="card-media-badge">HOUDINI / UNITY</span>
+        <img src="https://github.com/user-attachments/assets/13191263-b3d9-480b-8201-2f62d315451c" alt="Procedural Environment Utilities" loading="lazy">
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Houdini Engine Environment Utilities</h3>
+        <p class="card-description">
+          A set of procedural workflow tools built with Houdini Engine for Unity. Includes a Procedural Rock Arch Generator for natural formations and a Terrain Rocks scatter tool for automated environment dressing on Unity terrains.
+        </p>
+        <div class="card-tags">
+          <span class="tag tag-houdini">Houdini Engine</span>
+          <span class="tag tag-unity">Unity</span>
+          <span class="tag">Procedural HDA</span>
+        </div>
+        <div class="card-footer">
+          <a href="https://youtu.be/U2MAFMaHZb4" target="_blank" rel="noopener" class="btn btn-primary btn-sm">📺 Watch Demo</a>
+          <a href="https://github.com/Veltrynox/misc_samples" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">📂 View Source</a>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Games Section -->
+  <section id="games" style="grid-column: 1 / -1; display: contents;">
+    
+    <!-- Tower Defense -->
+    <div class="card" data-category="games">
+      <div class="card-media">
+        <span class="card-media-badge">GAME</span>
+        <img src="https://github.com/user-attachments/assets/29d94611-262b-4857-a648-915c840de7c9" alt="Tower Defense Gameplay" loading="lazy">
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Tower Defense (Ironclash)</h3>
+        <p class="card-description">
+          Game prototype featuring dynamic wave spawning, building placement, tower upgrades, and persistent save data serialization.
+        </p>
+        <div class="card-tags">
+          <span class="tag tag-unity">Unity</span>
+          <span class="tag tag-csharp">C#</span>
+          <span class="tag">Game Systems</span>
+        </div>
+        <div class="card-footer">
+          <a href="https://github.com/Veltrynox/tower_defence" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">📂 Code</a>
+          <a href="https://veltrynox.itch.io/ironclash-alpha" target="_blank" rel="noopener" class="btn btn-primary btn-sm">🎮 Play Game</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Space Shooter -->
+    <div class="card" data-category="games">
+      <div class="card-media">
+        <span class="card-media-badge">GAME</span>
+        <img src="https://raw.githubusercontent.com/Veltrynox/space_shooter/main/media/output.gif" alt="Space Shooter Gameplay" loading="lazy">
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Space Shooter</h3>
+        <p class="card-description">
+          2D space action prototype featuring responsive player ship controllers, projectile pooling systems, and enemy wave patterns.
+        </p>
+        <div class="card-tags">
+          <span class="tag tag-unity">Unity 2D</span>
+          <span class="tag tag-csharp">C#</span>
+          <span class="tag">Object Pooling</span>
+        </div>
+        <div class="card-footer">
+          <a href="https://github.com/Veltrynox/space_shooter" target="_blank" rel="noopener" class="btn btn-primary btn-sm">📂 Source Code</a>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Tools & Code Section -->
+  <section id="tools" style="grid-column: 1 / -1; display: contents;">
+    
+    <!-- SandPile (C++) -->
+    <div class="card" data-category="tools">
+      <div class="card-media">
+        <span class="card-media-badge">C++ SIMULATION</span>
+        <img src="https://github.com/user-attachments/assets/b90e06e2-ef6f-41de-aba2-c4a26697257a" alt="SandPile Simulation" loading="lazy">
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">SandPile Cellular Automata</h3>
+        <p class="card-description">
+          C++ implementation of the Abelian Sandpile Model, utilizing OpenCL for parallelized cell updates and grid visualization.
+        </p>
+        <div class="card-tags">
+          <span class="tag tag-cpp">C++</span>
+          <span class="tag">OpenCL</span>
+          <span class="tag">Simulation</span>
+        </div>
+        <div class="card-footer">
+          <a href="https://github.com/Veltrynox/misc_samples/tree/main/OpenCL/sandpile_algorithm" target="_blank" rel="noopener" class="btn btn-primary btn-sm">📂 View Source</a>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
 </div>
 
-<div style="display: flex; flex-wrap: wrap; gap: 30px; margin-bottom: 40px; align-items: start;">
-  <div style="flex: 1; min-width: 300px;">
-    <a href="https://raw.githubusercontent.com/Veltrynox/space_shooter/main/media/output.gif">
-      <img src="https://raw.githubusercontent.com/Veltrynox/space_shooter/main/media/output.gif" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-    </a>
+<!-- Archive History Section (Expanded by Default) -->
+<section id="archive">
+  <div class="section-header">
+    <h2 class="section-title"><span class="section-title-icon">🕹️</span> Project Archive & History</h2>
+    <a href="https://github.com/Veltrynox/gamedev_course_homework_archive" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">📂 Archive Repository</a>
   </div>
-  <div style="flex: 1; min-width: 300px;">
-    <h3>Space Shooter</h3>
-    <p><strong>2D Prototype:</strong> Features smooth player movement, projectile pooling, and enemy patterns.</p>
-    <p>
-      <a href="https://github.com/Veltrynox/space_shooter">📂 <strong>Source Code</strong></a>
-    </p>
-  </div>
-</div>
-
-<br>
-
-<details>
-<summary style="cursor: pointer; font-size: 1.1em;"><strong>🕹️ Archive: Full Project History (Click to Expand)</strong></summary>
-<br>
-
-<p><a href="https://github.com/Veltrynox/gamedev_course_homework_archive">📂 <strong>View Source Code Repository</strong></a></p>
-
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; text-align: center;">
   
-  <div>
-    <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/helixjump/images/gameplay.gif" style="width: 100%; border-radius: 6px;">
-    <p><strong>Helix Jump</strong></p>
+  <details class="archive-toggle" open>
+    <summary>Full Project History (7 Archive Prototypes)</summary>
+    <div class="archive-grid">
+      <div class="archive-item">
+        <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/helixjump/images/gameplay.gif" alt="Helix Jump" loading="lazy">
+        <p>Helix Jump</p>
+      </div>
+      <div class="archive-item">
+        <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/ball_blast/content/gameplay.gif" alt="Ball Blast" loading="lazy">
+        <p>Ball Blast</p>
+      </div>
+      <div class="archive-item">
+        <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/adventure.gif" alt="Adventure" loading="lazy">
+        <p>Adventure</p>
+      </div>
+      <div class="archive-item">
+        <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/pacman.gif" alt="Pacman" loading="lazy">
+        <p>Pacman</p>
+      </div>
+      <div class="archive-item">
+        <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/arkanoid.gif" alt="Arkanoid" loading="lazy">
+        <p>Arkanoid</p>
+      </div>
+      <div class="archive-item">
+        <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/find_couple.gif" alt="Find Couple" loading="lazy">
+        <p>FindCouple</p>
+      </div>
+      <div class="archive-item">
+        <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/pong_banner.jpg" alt="Pong Clone" loading="lazy">
+        <p>Pong Clone</p>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="contact-section">
+  <div class="contact-card">
+    <h2>📬 Let's Connect</h2>
+    <p>Feel free to reach out about game projects, shaders, or procedural tools!</p>
+    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+      <a href="mailto:ilarin75@gmail.com" class="btn btn-primary">✉️ Email Me</a>
+      <a href="https://github.com/Veltrynox" target="_blank" rel="noopener" class="btn btn-secondary">📂 GitHub</a>
+      <a href="#" class="btn btn-secondary">📄 Resume (PDF)</a>
+    </div>
   </div>
-  
-  <div>
-    <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/ball_blast/content/gameplay.gif" style="width: 100%; border-radius: 6px;">
-    <p><strong>Ball Blast</strong></p>
-  </div>
-
-  <div>
-    <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/adventure.gif" style="width: 100%; border-radius: 6px;">
-    <p><strong>Adventure</strong></p>
-  </div>
-
-  <div>
-    <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/pacman.gif" style="width: 100%; border-radius: 6px;">
-    <p><strong>Pacman</strong></p>
-  </div>
-
-  <div>
-    <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/arkanoid.gif" style="width: 100%; border-radius: 6px;">
-    <p><strong>Arkanoid</strong></p>
-  </div>
-
-  <div>
-    <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/find_couple.gif" style="width: 100%; border-radius: 6px;">
-    <p><strong>FindCouple</strong></p>
-  </div>
-
-  <div>
-    <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/pong_banner.jpg" style="width: 100%; border-radius: 6px;">
-    <p><strong>Pong Clone</strong></p>
-  </div>
-</div>
-</details>
-
-<hr>
-
-<h2>🎨 Shaders & Graphics</h2>
-
-<h3>Ocean Shader</h3>
-<img src="https://github.com/user-attachments/assets/158e0db6-c761-473b-b1be-e137b3e6992d" style="width: 100%; border-radius: 8px; margin-bottom: 15px;">
-
-<p><a href="https://github.com/Veltrynox/plateau-steward/tree/main/Assets/Materials/FX/Ocean"><strong>📂 View Source Code</strong></a></p>
-
-<details>
-<summary style="cursor: pointer;"><strong>📖 Read Technical Breakdown (Compute Shader, Split View, Tessellation)</strong></summary>
-<div style="margin-top: 15px; padding-left: 10px; border-left: 3px solid #ddd;">
-
-<h5>Gerstner Waves (Compute Shader):</h5>
-<p>Optimized simulation by moving Gerstner math from the Vertex Shader to a Compute Shader.</p>
-<ul>
-  <li>Outputs Displacement and Normal Maps as global shader variables.</li>
-  <li>Decouples simulation cost from geometry resolution.</li>
-</ul>
-
-<h5>The Split View & Tessellation:</h5>
-<ul>
-  <li><strong>Split View:</strong> Switched from geometric masking to camera near-plane logic for a pixel-perfect water line.</li>
-  <li><strong>Tessellation:</strong> Implemented distance-based Hull/Domain shaders for micro-detail without a performance hit.</li>
-</ul>
-
-<div style="display: flex; gap: 10px; flex-wrap: wrap;">
-  <div style="flex: 1; min-width: 250px;">
-    <p><strong>Final Render</strong></p>
-    <img src="https://github.com/user-attachments/assets/40d10fb1-da61-46a6-9839-a74e00fa5486" style="width: 100%; border-radius: 6px;">
-  </div>
-  <div style="flex: 1; min-width: 250px;">
-    <p><strong>Linear Depth</strong></p>
-    <img src="https://github.com/user-attachments/assets/3a2126f8-67e6-466c-aea3-32a754918642" style="width: 100%; border-radius: 6px;">
-  </div>
-</div>
-
-</div>
-</details>
-
-<hr>
-<h2>🛠️ Tools</h2>
-
-<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px; align-items: center;">
-  <div style="flex: 1; min-width: 300px;">
-    <h3>Procedural Rock Arch Generator</h3>
-    <p><strong>Unity & Houdini:</strong> A procedural tool for generating complex rock arches and natural formations directly within Unity using Houdini Engine.</p>
-    <a href="https://youtu.be/U2MAFMaHZb4" style="margin-right: 15px;">📺 Watch Demo</a>
-    <a href="https://github.com/Veltrynox/misc_samples">📂 View Source</a>
-  </div>
-  <div style="flex: 1; min-width: 300px;">
-    <img src="https://github.com/user-attachments/assets/13191263-b3d9-480b-8201-2f62d315451c" style="width: 100%; border-radius: 6px;" alt="Procedural Rock Arch Generator Screenshot">
-  </div>
-</div>
-
-<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px; align-items: center;">
-  <div style="flex: 1; min-width: 300px;">
-    <h3>SandPile (C++)</h3>
-    <p><strong>Cellular Automata:</strong> A C++ implementation of the Abelian Sandpile Model.</p>
-    <a href="https://github.com/Veltrynox/misc_samples/tree/main/OpenCL/sandpile_algorithm">📂 View Source</a>
-  </div>
-  <div style="flex: 1; min-width: 300px;">
-    <img src="https://github.com/user-attachments/assets/b90e06e2-ef6f-41de-aba2-c4a26697257a" style="width: 100%; border-radius: 6px;">
-  </div>
-</div>
-
-<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px; align-items: center;">
-  <div style="flex: 1; min-width: 300px;">
-    <h3>Houdini Rocks Generator</h3>
-    <p>Houdini Unity Engine procedural rocks generator that uses Unity's terrain.</p>
-    <a href="https://github.com/Veltrynox/misc_samples/blob/main/houdini/sop_ps.terraingeo.1.0.hdalc">📂 View Source</a>  
-  </div>
-  <div style="flex: 1; min-width: 300px;">
-    <img src="https://github.com/user-attachments/assets/05bc4baf-3e63-4303-b1c2-be1ea4deb0f3" style="width: 100%; border-radius: 6px;">
-  </div>
-</div>
-
-<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px; align-items: center;">
-  <div style="flex: 1; min-width: 300px;">
-    <h3>Houdini Tunnel Generator</h3>
-    <p>Houdini Python State tool for generating tunnel skeletons.</p>
-    <a href="https://github.com/Veltrynox/misc_samples/blob/main/houdini/houdiniTonnelGeneratorState">📂 View Source</a>  
-  </div>
-  <div style="flex: 1; min-width: 300px;">
-    <img src="https://github.com/user-attachments/assets/415a7b56-7b06-491f-b6a9-4298a1622b28" style="width: 100%; border-radius: 6px;">
-  </div>
-</div>
-
-<hr>
-
-<div style="text-align: center; margin-top: 40px; margin-bottom: 60px;">
-  <h3>📬 Get In Touch</h3>
-  <p>
-    <a href="mailto:ilarin75@gmail.com" style="margin-right: 15px;"><strong>Email Me</strong></a> | 
-    <a href="#" style="margin-right: 15px;"><strong>Download Resume (PDF)</strong></a> | 
-    <a href="https://github.com/Veltrynox"><strong>GitHub</strong></a>
-  </p>
-</div>
-
-
+</section>

@@ -1,3 +1,4 @@
-title:
-description:
-theme: jekyll-theme-slate
+title: Ivan Larinin | Portfolio & Showcase
+description: Portfolio of Ivan Larinin - Projects in game development, shaders, procedural tools, and C++ simulations.
+markdown: kramdown
+highlighter: rouge
