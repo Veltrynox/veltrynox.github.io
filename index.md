@@ -211,15 +211,19 @@ title: Ivan Larinin | Portfolio & Showcase
 
 </div>
 
-<!-- Archive History Section (Expanded by Default) -->
+<!-- Projects Section (Renamed & Highly Visible Repo Link) -->
 <section id="archive">
-  <div class="section-header">
-    <h2 class="section-title"><span class="section-title-icon">🕹️</span> Project Archive & History</h2>
-    <a href="https://github.com/Veltrynox/gamedev_course_homework_archive" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">📂 Archive Repository</a>
+  <div class="section-header" style="flex-direction: column; align-items: flex-start; gap: 1rem; padding-bottom: 1.25rem;">
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; flex-wrap: wrap; gap: 1rem;">
+      <h2 class="section-title"><span class="section-title-icon">🕹️</span> Projects</h2>
+      <a href="https://github.com/Veltrynox/gamedev_course_homework_archive" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 0.95rem; padding: 0.6rem 1.4rem;">
+        📂 View Full Code & Projects Repository on GitHub
+      </a>
+    </div>
   </div>
   
   <details class="archive-toggle" open>
-    <summary>Full Project History (7 Archive Prototypes)</summary>
+    <summary>Full Project List (7 Prototypes)</summary>
     <div class="archive-grid">
       <div class="archive-item">
         <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/helixjump/images/gameplay.gif" alt="Helix Jump" loading="lazy">
