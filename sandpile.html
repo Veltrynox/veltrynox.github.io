@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sand Dunes Simulation (Houdini C++ SOP) | Ivan Larinin</title>
+  <meta name="description" content="Custom Houdini C++ Surface Operator (SOP) written by Ivan Larinin for sand dune dynamics simulation on the feature film Dune (Part One).">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Sticky Glassmorphic Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <span class="nav-brand-logo">IL</span>
+        <span class="nav-brand-text">IVAN LARININ</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="blog.html" class="btn btn-secondary btn-sm">📝 All Posts</a>
+        <a href="index.html" class="btn btn-secondary btn-sm">🏠 Portfolio</a>
+        <a href="https://github.com/Veltrynox" target="_blank" rel="noopener" class="btn btn-primary btn-sm">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+    
+    <div class="article-container">
+      
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <a href="blog.html">Blog</a>
+        <span>/</span>
+        <span>Sand Dunes Simulation</span>
+      </nav>
+
+      <!-- Post Header -->
+      <header class="post-header">
+        <div class="article-meta" style="margin-bottom: 1rem;">
+          <span>📅 August 2026</span>
+          <span>•</span>
+          <span>⏱️ 3 min read</span>
+          <span>•</span>
+          <span class="tag tag-cpp">Houdini C++</span>
+          <span class="tag tag-shader">VFX / Dune</span>
+          <span class="tag tag-unity">Simulation</span>
+        </div>
+        <h1 class="post-title">Sand Dunes Simulation (Houdini C++ SOP)</h1>
+      </header>
+
+      <!-- Post Content -->
+      <article class="post-content">
+        
+        <div style="margin-bottom: 2rem; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-light);">
+          <img src="https://github.com/user-attachments/assets/b90e06e2-ef6f-41de-aba2-c4a26697257a" alt="Sand Dunes Simulation Preview" style="width: 100%;">
+        </div>
+
+        <h2>Overview</h2>
+        <p>
+          This custom <strong>Houdini C++ Surface Operator (SOP)</strong> node was built for sand dune dynamics simulation on the feature film <em>Dune (Part One)</em>.
+        </p>
+        <p>
+          Instead of relying on heavy Vellum grain solvers for large landscape sand movements, this custom SOP node (<code>sandDunes</code>) implements a fast, cellular-automata mass transfer algorithm directly on Houdini point geometry.
+        </p>
+
+        <div class="callout-box">
+          <div class="callout-title">💡 How the Algorithm Works:</div>
+          <p>
+            1. <strong>Attribute Inspection:</strong> Evaluates point height (<code>h</code>) and neighbor point arrays (<code>__nearpoints__</code>).<br>
+            2. <strong>Threshold Check:</strong> Compares local point height delta <code>(h - nptH)</code> against a configurable threshold (<code>threshold</code>).<br>
+            3. <strong>Mass Transfer:</strong> When the height threshold is exceeded, sand mass (<code>mass</code>) is transferred from the higher point to a randomly selected neighbor over <code>N</code> iterations.<br>
+            4. <strong>Performance:</strong> Executes in C++ as a native Houdini C++ DSO operator, scaling efficiently across dense point fields.
+          </p>
+        </div>
+
+        <h2>C++ Source Code</h2>
+
+        <!-- Header File Code Container -->
+        <div class="code-container">
+          <div class="code-header">
+            <span>sandDunes.h (Header File)</span>
+            <span>C++</span>
+          </div>
+          <pre><code><span class="code-macro">#ifndef __sandDunes__</span>
+<span class="code-macro">#define __sandDunes__</span>
+
+<span class="code-macro">#include</span> <span class="code-str">&lt;SOP/SOP_Node.h&gt;</span>
+
+<span class="code-kw">class</span> <span class="code-type">sandDunes</span> : <span class="code-kw">public</span> <span class="code-type">SOP_Node</span>
+{
+<span class="code-kw">public</span>:
+    <span class="code-func">sandDunes</span>(<span class="code-type">OP_Network</span> *net, <span class="code-kw">const char</span> *name, <span class="code-type">OP_Operator</span> *op);
+    <span class="code-kw">virtual</span> ~<span class="code-func">sandDunes</span>();
+
+    <span class="code-kw">static</span> <span class="code-type">PRM_Template</span> myTemplateList[];
+    <span class="code-kw">static</span> <span class="code-type">OP_Node</span> *<span class="code-func">myConstructor</span>(<span class="code-type">OP_Network</span>*, <span class="code-kw">const char</span> *, <span class="code-type">OP_Operator</span> *);
+
+<span class="code-kw">protected</span>:
+    <span class="code-kw">virtual</span> <span class="code-type">OP_ERROR</span> <span class="code-func">cookMySop</span>(<span class="code-type">OP_Context</span> &context);
+<span class="code-kw">private</span>:
+    <span class="code-type">int</span> <span class="code-func">ITERATIONS</span>(<span class="code-type">fpreal</span> t) { <span class="code-kw">return</span> <span class="code-func">evalInt</span>(<span class="code-str">"iters"</span>, <span class="code-str">0</span>, t); }
+    <span class="code-type">float</span> <span class="code-func">GETMASS</span>(<span class="code-type">fpreal</span> t) { <span class="code-kw">return</span> <span class="code-func">evalFloat</span>(<span class="code-str">"mass"</span>, <span class="code-str">0</span>, t); }
+    <span class="code-type">float</span> <span class="code-func">GETTHRS</span>(<span class="code-type">fpreal</span> t) { <span class="code-kw">return</span> <span class="code-func">evalFloat</span>(<span class="code-str">"threshold"</span>, <span class="code-str">0</span>, t); }
+};
+
+<span class="code-macro">#endif</span></code></pre>
+        </div>
+
+        <!-- Implementation File Code Container -->
+        <div class="code-container">
+          <div class="code-header">
+            <span>sandDunes.cpp (Implementation File)</span>
+            <span>C++</span>
+          </div>
+          <pre><code><span class="code-macro">#include</span> <span class="code-str">"sandDunes.h"</span>
+
+<span class="code-macro">#include</span> <span class="code-str">&lt;GU/GU_Detail.h&gt;</span>
+<span class="code-macro">#include</span> <span class="code-str">&lt;GA/GA_Handle.h&gt;</span>
+<span class="code-macro">#include</span> <span class="code-str">&lt;OP/OP_AutoLockInputs.h&gt;</span>
+<span class="code-macro">#include</span> <span class="code-str">&lt;OP/OP_Director.h&gt;</span>
+<span class="code-macro">#include</span> <span class="code-str">&lt;OP/OP_Operator.h&gt;</span>
+<span class="code-macro">#include</span> <span class="code-str">&lt;OP/OP_OperatorTable.h&gt;</span>
+<span class="code-macro">#include</span> <span class="code-str">&lt;PRM/PRM_Include.h&gt;</span>
+<span class="code-macro">#include</span> <span class="code-str">&lt;UT/UT_DSOVersion.h&gt;</span>
+<span class="code-macro">#include</span> <span class="code-str">&lt;SYS/SYS_Math.h&gt;</span>
+<span class="code-macro">#include</span> <span class="code-str">&lt;GEO/GEO_PointTree.h&gt;</span>
+<span class="code-macro">#include</span> <span class="code-str">&lt;UT/UT_ValArray.h&gt;</span>
+<span class="code-macro">#include</span> <span class="code-str">&lt;vector&gt;</span>
+
+<span class="code-kw">void</span>
+<span class="code-func">newSopOperator</span>(<span class="code-type">OP_OperatorTable</span> *table)
+{
+    table-&gt;<span class="code-func">addOperator</span>(<span class="code-kw">new</span> <span class="code-type">OP_Operator</span>(
+        <span class="code-str">"sandunes"</span>,
+        <span class="code-str">"sandDunes "</span>,
+        sandDunes::myConstructor,
+        sandDunes::myTemplateList,
+        <span class="code-str">1</span>,
+        <span class="code-str">1</span>,
+        <span class="code-str">0</span>));
+}
+
+<span class="code-kw">static</span> <span class="code-type">PRM_Name</span> <span class="code-func">iterName</span>(<span class="code-str">"iters"</span>, <span class="code-str">"Iterations"</span>);
+<span class="code-kw">static</span> <span class="code-type">PRM_Name</span> <span class="code-func">massName</span>(<span class="code-str">"mass"</span>, <span class="code-str">"Mass"</span>);
+<span class="code-kw">static</span> <span class="code-type">PRM_Name</span> <span class="code-func">thrName</span>(<span class="code-str">"threshold"</span>, <span class="code-str">"Threshold"</span>);
+
+<span class="code-kw">static</span> <span class="code-type">PRM_Default</span> <span class="code-func">iterDefault</span>(<span class="code-str">1</span>);
+<span class="code-kw">static</span> <span class="code-type">PRM_Default</span> <span class="code-func">massDefault</span>(<span class="code-str">0.05</span>);
+<span class="code-kw">static</span> <span class="code-type">PRM_Default</span> <span class="code-func">trhDefault</span>(<span class="code-str">0.09</span>);
+
+<span class="code-type">PRM_Template</span>
+sandDunes::myTemplateList[] = {
+    <span class="code-type">PRM_Template</span>(PRM_INT_J, <span class="code-str">1</span>, &iterName, &iterDefault, <span class="code-str">0</span>),
+    <span class="code-type">PRM_Template</span>(PRM_FLT_J, <span class="code-str">1</span>, &massName, &massDefault, <span class="code-str">0</span>),
+    <span class="code-type">PRM_Template</span>(PRM_FLT_J, <span class="code-str">1</span>, &thrName, &trhDefault, <span class="code-str">0</span>),
+    <span class="code-type">PRM_Template</span>(),
+};
+
+<span class="code-type">OP_Node</span> *
+sandDunes::<span class="code-func">myConstructor</span>(<span class="code-type">OP_Network</span> *net, <span class="code-kw">const char</span> *name, <span class="code-type">OP_Operator</span> *op)
+{
+    <span class="code-kw">return new</span> <span class="code-func">sandDunes</span>(net, name, op);
+}
+
+sandDunes::<span class="code-func">sandDunes</span>(<span class="code-type">OP_Network</span> *net, <span class="code-kw">const char</span> *name, <span class="code-type">OP_Operator</span> *op)
+    : <span class="code-type">SOP_Node</span>(net, name, op)
+{
+}
+
+sandDunes::~<span class="code-func">sandDunes</span>()
+{
+}
+
+<span class="code-type">OP_ERROR</span>
+sandDunes::<span class="code-func">cookMySop</span>(<span class="code-type">OP_Context</span> &context)
+{
+    <span class="code-type">fpreal</span> now = context.<span class="code-func">getTime</span>();
+
+    <span class="code-type">OP_AutoLockInputs</span> <span class="code-func">inputs</span>(<span class="code-kw">this</span>);
+    <span class="code-kw">if</span> (inputs.<span class="code-func">lock</span>(context) &gt;= UT_ERROR_ABORT)
+        <span class="code-kw">return</span> <span class="code-func">error</span>();
+
+    <span class="code-func">duplicateSource</span>(<span class="code-str">0</span>, context);
+
+    <span class="code-type">int</span> iterations = <span class="code-func">ITERATIONS</span>(now);
+    <span class="code-type">float</span> mass = <span class="code-func">GETMASS</span>(now);
+    <span class="code-type">float</span> trhs = <span class="code-func">GETTHRS</span>(now);
+
+    <span class="code-type">GA_ROHandleIA</span> <span class="code-func">_npts</span>(gdp, GA_ATTRIB_POINT, <span class="code-str">"__nearpoints__"</span>);
+    <span class="code-type">GA_RWHandleF</span> <span class="code-func">_h</span>(gdp, GA_ATTRIB_POINT, <span class="code-str">"h"</span>);
+
+    <span class="code-kw">if</span> (_h.<span class="code-func">isValid</span>() &amp;&amp; _npts.<span class="code-func">isValid</span>())
+    {
+        <span class="code-kw">for</span> (<span class="code-type">int</span> i = <span class="code-str">0</span>; i &lt; iterations; i++) 
+        {
+            <span class="code-kw">for</span> (<span class="code-type">GA_Iterator</span> it(gdp-&gt;<span class="code-func">getPointRange</span>()); !it.<span class="code-func">atEnd</span>(); ++it)
+            {
+                <span class="code-type">GA_Offset</span> offset = *it;
+                <span class="code-type">float</span> h = _h.<span class="code-func">get</span>(offset);
+                <span class="code-type">UT_Int32Array</span> npts;
+                _npts.<span class="code-func">get</span>(offset, npts);
+                <span class="code-type">int</span> randIdx = <span class="code-func">rand</span>() % npts.<span class="code-func">size</span>();
+                <span class="code-type">GA_Offset</span> nptOffset = gdp-&gt;<span class="code-func">pointOffset</span>(npts[randIdx]);
+                <span class="code-type">float</span> nptH = _h.<span class="code-func">get</span>(nptOffset);
+
+                <span class="code-kw">if</span> ((h - nptH) &gt;= trhs) 
+                {
+                    h -= mass;
+                    nptH += mass;
+                    _h.<span class="code-func">set</span>(nptOffset, h);
+                    _h.<span class="code-func">set</span>(offset, nptH);
+                }
+            }
+        }
+    }
+    <span class="code-kw">else</span>
+        std::cerr &lt;&lt; <span class="code-str">" h or __nearpoints__ attribute is lost !!"</span> &lt;&lt; std::endl;
+
+    <span class="code-kw">return</span> <span class="code-func">error</span>();
+}</code></pre>
+        </div>
+
+        <div style="margin-top: 2rem; padding: 1.5rem; background: var(--bg-card); border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+          <h3 style="margin-top: 0;">📂 GitHub Source Code Repository</h3>
+          <p style="margin-bottom: 1rem;">View the source code files and repository samples on GitHub:</p>
+          <a href="https://github.com/Veltrynox/misc_samples/tree/main/OpenCL/sandpile_algorithm" target="_blank" rel="noopener" class="btn btn-primary btn-sm">View Source Code on GitHub →</a>
+        </div>
+
+      </article>
+
+      <!-- Back to Blog Button -->
+      <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-light); text-align: center;">
+        <a href="blog.html" class="btn btn-primary">← Back to All Articles</a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 Ivan Larinin • Personal Portfolio & Blog</p>
+    </div>
+  </footer>
+
+  <!-- Interactive Scripts -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
