@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog | Ivan Larinin</title>
+  <meta name="description" content="Technical blog by Ivan Larinin — Deep-dives into Unreal Engine C++, real-time graphics, shaders, and procedural tooling.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Sticky Glassmorphic Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <span class="nav-brand-logo">IL</span>
+        <span class="nav-brand-text">IVAN LARININ</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="index.html" class="btn btn-secondary btn-sm">🏠 Portfolio</a>
+        <a href="mailto:ilarin75@gmail.com" class="btn btn-secondary btn-sm">✉️ Email</a>
+        <a href="https://www.artstation.com/ivanlarinin" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">🎨 ArtStation</a>
+        <a href="https://github.com/Veltrynox" target="_blank" rel="noopener" class="btn btn-primary btn-sm">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+    
+    <!-- Blog Header -->
+    <header class="blog-header">
+      <div class="hero-badge">📝 Technical Writing</div>
+      <h1 class="blog-title">Engineering <span class="hero-title-gradient">Blog</span></h1>
+      <p class="blog-subtitle">
+        Deep-dives into Unreal Engine C++, real-time graphics, shaders, and procedural tooling.
+      </p>
+    </header>
+
+    <!-- Blog Articles List -->
+    <div style="max-width: 850px; margin: 0 auto 4rem;">
+      
+      <!-- Article 1: UWorldSubsystem -->
+      <article class="article-card">
+        <div class="article-meta">
+          <span>📅 August 2026</span>
+          <span>•</span>
+          <span>⏱️ 3 min read</span>
+          <span>•</span>
+          <span class="tag tag-csharp" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.3);">Unreal Engine 5</span>
+          <span class="tag tag-cpp">C++</span>
+        </div>
+        <h2 class="article-title">
+          <a href="uworldsubsystem.html">UWorldSubsystems</a>
+        </h2>
+        <p class="article-excerpt">
+          If you are coming to Unreal Engine 5 from Unity or another engine, you have probably built a "Manager" class before. Discover how Unreal Engine's built-in Subsystems automatically initialize and deinitialize alongside engine lifetimes for a clean C++ architecture.
+        </p>
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div class="card-tags" style="margin-bottom: 0;">
+            <span class="tag tag-cpp">C++ Architecture</span>
+            <span class="tag tag-unity">Subsystems</span>
+            <span class="tag">Unreal Engine 5</span>
+          </div>
+          <a href="uworldsubsystem.html" class="btn btn-primary btn-sm">Read Article →</a>
+        </div>
+      </article>
+
+      <!-- Article 2: Gerstner Ocean Shader -->
+      <article class="article-card">
+        <div class="article-meta">
+          <span>📅 December 2025</span>
+          <span>•</span>
+          <span>⏱️ 5 min read</span>
+          <span>•</span>
+          <span class="tag tag-shader">Compute Shader</span>
+          <span class="tag tag-unity">Unity</span>
+        </div>
+        <h2 class="article-title">
+          <a href="oceanshader.html">Ocean Shader: Compute Shader Wave Simulation & Tessellation</a>
+        </h2>
+        <p class="article-excerpt">
+          Moving expensive Gerstner wave mathematics from the Vertex Shader to a GPU Compute Shader. Decoupling simulation cost from ocean surface geometry resolution, distance-based Hull/Domain tessellation, and camera near-plane split view logic.
+        </p>
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div class="card-tags" style="margin-bottom: 0;">
+            <span class="tag tag-shader">HLSL</span>
+            <span class="tag tag-shader">Compute Shader</span>
+            <span class="tag">Tessellation</span>
+          </div>
+          <a href="oceanshader.html" class="btn btn-primary btn-sm">Read Article →</a>
+        </div>
+      </article>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 Ivan Larinin • Personal Portfolio & Blog</p>
+    </div>
+  </footer>
+
+  <!-- Interactive Scripts -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ocean Shader & Compute Shader Wave Simulation | Ivan Larinin</title>
+  <meta name="description" content="Technical breakdown of GPU ocean wave simulation using Compute Shaders, distance-based tessellation, and near-plane split-view rendering in Unity.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Sticky Glassmorphic Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <span class="nav-brand-logo">IL</span>
+        <span class="nav-brand-text">IVAN LARININ</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="blog.html" class="btn btn-secondary btn-sm">📝 All Posts</a>
+        <a href="index.html" class="btn btn-secondary btn-sm">🏠 Portfolio</a>
+        <a href="https://github.com/Veltrynox" target="_blank" rel="noopener" class="btn btn-primary btn-sm">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+    
+    <div class="article-container">
+      
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <a href="blog.html">Blog</a>
+        <span>/</span>
+        <span>Ocean Shader</span>
+      </nav>
+
+      <!-- Post Header -->
+      <header class="post-header">
+        <div class="article-meta" style="margin-bottom: 1rem;">
+          <span>📅 December 2025</span>
+          <span>•</span>
+          <span>⏱️ 5 min read</span>
+          <span>•</span>
+          <span class="tag tag-shader">Compute Shader</span>
+          <span class="tag tag-unity">Unity</span>
+          <span class="tag tag-shader">HLSL</span>
+        </div>
+        <h1 class="post-title">Ocean Shader: Compute Shader Wave Simulation & Tessellation</h1>
+      </header>
+
+      <!-- Post Content -->
+      <article class="post-content">
+        
+        <div style="margin-bottom: 2rem; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-light);">
+          <img src="https://github.com/user-attachments/assets/158e0db6-c761-473b-b1be-e137b3e6992d" alt="Ocean Shader Preview" style="width: 100%;">
+        </div>
+
+        <h2>1. Gerstner Waves via Compute Shader</h2>
+        <p>
+          Instead of calculating Gerstner Wave math inside the Vertex Shader for every single vertex in the ocean mesh, I moved the simulation to a <strong>GPU Compute Shader</strong>.
+        </p>
+        <p>
+          The Compute Shader outputs a RenderTexture (Displacement Map) and Normal Map. These textures are set as global shader variables and act as a single source of truth across the engine:
+        </p>
+        <ul>
+          <li>The Ocean Surface samples them to displace vertices.</li>
+          <li>The Post-Processing Effect reads them to calculate the waterline.</li>
+          <li>Caustics shaders sample the displacement buffer.</li>
+          <li>The C# Physics System reads the buffer for buoyancy calculations.</li>
+        </ul>
+        <p>
+          By baking to textures, we decouple the simulation cost entirely from geometry resolution. We can scale wave complexity (adding FFT waves or extra Gerstner octaves) without touching ocean mesh geometry logic.
+        </p>
+
+        <h2>2. Split View & Near-Plane Water Line</h2>
+        <p>
+          Initially, I attempted to render the split-view using geometric two-sided masking. This resulted in code bloat and complex conditional logic to handle near-clip plane artifacts.
+        </p>
+        <p>
+          Eventually, I switched to using the camera near-plane frustum logic. This keeps the code clean, eliminates artifacts, and achieves a pixel-perfect waterline.
+        </p>
+
+        <h2>3. Distance-Based Tessellation</h2>
+        <p>
+          To achieve realistic small-scale micro-waves without destroying performance, I implemented distance-based Hull and Domain tessellation shaders. I also added displacement flattening towards the horizon, which stabilizes specular highlights and Z-depth testing while maintaining a shorter computed ocean mesh.
+        </p>
+
+        <h2>4. Scene Linear Depth & Fog Pass</h2>
+        <div class="comparison-grid" style="margin: 2rem 0;">
+          <div class="comparison-item">
+            <img src="https://github.com/user-attachments/assets/40d10fb1-da61-46a6-9839-a74e00fa5486" alt="Final Ocean Render">
+            <p>Final Ocean Render</p>
+          </div>
+          <div class="comparison-item">
+            <img src="https://github.com/user-attachments/assets/3a2126f8-67e6-466c-aea3-32a754918642" alt="Scene Linear Depth Pass">
+            <p>Scene Linear Depth Pass</p>
+          </div>
+        </div>
+
+        <div style="margin-top: 2rem; padding: 1.5rem; background: var(--bg-card); border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+          <h3 style="margin-top: 0;">📂 Source Code</h3>
+          <p style="margin-bottom: 1rem;">View the full ocean FX material and compute shader source files in GitHub:</p>
+          <a href="https://github.com/Veltrynox/plateau-steward/tree/main/Assets/Materials/FX/Ocean" target="_blank" rel="noopener" class="btn btn-primary btn-sm">View Source Repository on GitHub →</a>
+        </div>
+
+      </article>
+
+      <!-- Back to Blog Button -->
+      <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-light); text-align: center;">
+        <a href="blog.html" class="btn btn-primary">← Back to All Articles</a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 Ivan Larinin • Personal Portfolio & Blog</p>
+    </div>
+  </footer>
+
+  <!-- Interactive Scripts -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

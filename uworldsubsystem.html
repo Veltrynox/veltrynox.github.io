@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UWorldSubsystems | Ivan Larinin</title>
+  <meta name="description" content="Subsystems in Unreal Engine 5 — A cleaner built-in solution for manager classes like QuestManager.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Sticky Glassmorphic Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <span class="nav-brand-logo">IL</span>
+        <span class="nav-brand-text">IVAN LARININ</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="blog.html" class="btn btn-secondary btn-sm">📝 All Posts</a>
+        <a href="index.html" class="btn btn-secondary btn-sm">🏠 Portfolio</a>
+        <a href="https://github.com/Veltrynox" target="_blank" rel="noopener" class="btn btn-primary btn-sm">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+    
+    <div class="article-container">
+      
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <a href="blog.html">Blog</a>
+        <span>/</span>
+        <span>UWorldSubsystems</span>
+      </nav>
+
+      <!-- Post Header -->
+      <header class="post-header">
+        <div class="article-meta" style="margin-bottom: 1rem;">
+          <span>📅 August 2026</span>
+          <span>•</span>
+          <span>⏱️ 3 min read</span>
+          <span>•</span>
+          <span class="tag tag-csharp" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.3);">Unreal Engine 5</span>
+          <span class="tag tag-cpp">C++</span>
+        </div>
+        <h1 class="post-title">UWorldSubsystems</h1>
+      </header>
+
+      <!-- Post Content -->
+      <article class="post-content">
+        
+        <p>
+          If you are coming to Unreal Engine 5 from Unity or another engine, you have probably built a "Manager" class before—like a <code>GameManager</code>, <code>AudioManager</code>, or <code>QuestManager</code>. In Unity, this usually means writing a custom Singleton pattern or attaching a script to an invisible, empty GameObject just so it can run in the background.
+        </p>
+
+        <p>
+          In Unreal Engine 5, there is a much cleaner, built-in solution for this: <strong>Subsystems</strong>.
+        </p>
+
+        <p>
+          Here is a look at the foundational C++ code for my future <code>QuestManager</code>.
+        </p>
+
+        <!-- QuestManager.h -->
+        <div class="code-container">
+          <div class="code-header">
+            <span>QuestManager.h (The Header File)</span>
+            <span>C++</span>
+          </div>
+          <pre><code><span class="code-macro">#pragma once</span>
+
+<span class="code-macro">#include</span> <span class="code-str">"CoreMinimal.h"</span>
+<span class="code-macro">#include</span> <span class="code-str">"Subsystems/WorldSubsystem.h"</span>
+<span class="code-macro">#include</span> <span class="code-str">"QuestManager.generated.h"</span>
+
+<span class="code-macro">UCLASS</span>()
+<span class="code-kw">class</span> <span class="code-macro">QUEST_API</span> <span class="code-type">UQuestManager</span> : <span class="code-kw">public</span> <span class="code-type">UWorldSubsystem</span>
+{
+    <span class="code-macro">GENERATED_BODY</span>()
+    
+<span class="code-kw">public</span>:
+    <span class="code-kw">virtual void</span> <span class="code-func">Initialize</span>(<span class="code-type">FSubsystemCollectionBase</span>& Collection) <span class="code-kw">override</span>;
+    <span class="code-kw">virtual void</span> <span class="code-func">Deinitialize</span>() <span class="code-kw">override</span>;
+};</code></pre>
+        </div>
+
+        <!-- QuestManager.cpp -->
+        <div class="code-container">
+          <div class="code-header">
+            <span>QuestManager.cpp (The Implementation File)</span>
+            <span>C++</span>
+          </div>
+          <pre><code><span class="code-macro">#include</span> <span class="code-str">"QuestManager.h"</span>
+
+<span class="code-kw">void</span> <span class="code-type">UQuestManager</span>::<span class="code-func">Initialize</span>(<span class="code-type">FSubsystemCollectionBase</span>& Collection)
+{
+    Super::<span class="code-func">Initialize</span>(Collection);
+    <span class="code-macro">UE_LOG</span>(LogTemp, Warning, TEXT(<span class="code-str">"=== QuestManager: Initialized successfully ==="</span>));
+}
+
+<span class="code-kw">void</span> <span class="code-type">UQuestManager</span>::<span class="code-func">Deinitialize</span>()
+{
+    <span class="code-macro">UE_LOG</span>(LogTemp, Warning, TEXT(<span class="code-str">"=== QuestManager: Deinitialized ==="</span>));
+    Super::<span class="code-func">Deinitialize</span>();
+}</code></pre>
+        </div>
+
+        <h2>What is a Subsystem?</h2>
+
+        <p>
+          To put it simply, <strong>Subsystems are engine-managed systems that automatically initialize and deinitialize alongside specific engine lifetimes</strong>.
+        </p>
+
+        <p>
+          Unreal offers a few different types of Subsystems depending on how long you want them to live (e.g., for the entire game, for a specific player, etc.). For my <code>QuestManager</code>, I chose to inherit from <code>UWorldSubsystem</code>.
+        </p>
+
+        <p>Here is what makes <code>UWorldSubsystem</code> special:</p>
+
+        <ul>
+          <li><strong>Tied to the Level:</strong> It is tied directly to the lifecycle of the game world (the level).</li>
+          <li><strong>Automatic Start:</strong> When the level is created and loaded, the <code>Initialize()</code> function fires automatically.</li>
+          <li><strong>Automatic Cleanup:</strong> When the player leaves the level or the level is destroyed, the <code>Deinitialize()</code> function runs, safely shutting the system down.</li>
+        </ul>
+
+        <p>
+          This creates a clean, professional architectural foundation. Instead of checking if a player completed a quest every single frame using an expensive <code>Tick()</code> function, this background manager acts as a lightweight central hub.
+        </p>
+
+        <h2>Code Breakdown</h2>
+
+        <p>
+          <strong><code>Initialize()</code> and <code>Deinitialize()</code>:</strong> These are built-in functions provided by the USubsystem that we are overriding to inject our own setup and teardown logic.
+        </p>
+
+        <p>
+          With the default implementation, it will start ticking after Initialize and stop during Deinitialize.
+        </p>
+
+      </article>
+
+      <!-- Back to Blog Button -->
+      <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-light); text-align: center;">
+        <a href="blog.html" class="btn btn-primary">← Back to All Articles</a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 Ivan Larinin • Personal Portfolio & Blog</p>
+    </div>
+  </footer>
+
+  <!-- Interactive Scripts -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
