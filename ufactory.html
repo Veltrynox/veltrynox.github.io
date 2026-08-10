@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Assets in Unreal Engine: Understanding UFactory | Ivan Larinin</title>
+  <meta name="description" content="Learn how UFactory works in Unreal Engine C++ to instantiate custom assets in the Content Browser, using a QuestGraph editor extension as an example.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Sticky Glassmorphic Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <span class="nav-brand-logo">IL</span>
+        <span class="nav-brand-text">IVAN LARININ</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="blog.html" class="btn btn-secondary btn-sm">📝 All Posts</a>
+        <a href="index.html" class="btn btn-secondary btn-sm">🏠 Portfolio</a>
+        <a href="https://github.com/Veltrynox" target="_blank" rel="noopener" class="btn btn-primary btn-sm">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+    
+    <div class="article-container">
+      
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <a href="blog.html">Blog</a>
+        <span>/</span>
+        <span>UFactory in Unreal Engine</span>
+      </nav>
+
+      <!-- Post Header -->
+      <header class="post-header">
+        <div class="article-meta" style="margin-bottom: 1rem;">
+          <span>📅 August 2026</span>
+          <span>•</span>
+          <span>⏱️ 4 min read</span>
+          <span>•</span>
+          <span class="tag tag-csharp" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.3);">Unreal Engine 5</span>
+          <span class="tag tag-cpp">C++</span>
+          <span class="tag tag-unity">Editor Extension</span>
+        </div>
+        <h1 class="post-title">Custom Assets in Unreal Engine: Understanding UFactory</h1>
+      </header>
+
+      <!-- Post Content -->
+      <article class="post-content">
+        
+        <h2>What is UFactory and Why Do We Need It?</h2>
+        
+        <p>
+          When building custom tools in Unreal Engine, you usually start by writing a C++ data class for your system. For example, if you are making a Quest System, you might create a <code>UQuestGraph</code> class. In Unreal Engine, <code>UObject</code> is the base C++ class for objects managed by the engine's memory and reflection system.
+        </p>
+
+        <p>
+          However, simply writing a C++ class inheriting from <code>UObject</code> only defines how your data exists in code. By default, Unreal Editor has no idea how to let designers create a new instance of your <code>UQuestGraph</code> asset when they right-click in the Content Browser.
+        </p>
+
+        <p>
+          This is where <code>UFactory</code> comes in. A <code>UFactory</code> is a dedicated Unreal Engine class that teaches the editor how to construct new asset instances in memory or import files from disk.
+        </p>
+
+        <div class="callout-box">
+          <div class="callout-title">Key Responsibilities of UFactory:</div>
+          <p>
+            • <strong>Asset Binding:</strong> Tells Unreal Engine which C++ class the factory creates (<code>SupportedClass</code>).<br>
+            • <strong>Content Browser Integration:</strong> Adds your asset option to the right-click context menu (<code>bCreateNew = true</code>).<br>
+            • <strong>Allocation:</strong> Allocates the object in memory when created (<code>FactoryCreateNew()</code>).<br>
+            • <strong>Auto-Opening Editor:</strong> Opens your custom editor window immediately after asset creation (<code>bEditAfterNew = true</code>).
+          </p>
+        </div>
+
+        <h2>Editor Architecture and Class Interaction</h2>
+        
+        <p>
+          A custom asset factory works alongside two other classes to provide a complete Content Browser workflow: <code>FAssetTypeActions_Base</code> and an <code>IModuleInterface</code> editor module.
+        </p>
+
+        <div style="margin: 2rem 0; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-light);">
+          <img src="assets/media/UE_UFactory.png" alt="QuestGraph Editor Class Interaction Diagram" style="width: 100%; display: block;">
+        </div>
+
+        <p>Looking at the diagram above:</p>
+        <ul>
+          <li><strong>UFactory (Yellow):</strong> Handles object allocation in memory when requested by the Content Browser.</li>
+          <li><strong>FAssetTypeActions_Base (Green):</strong> Controls visual styling, thumbnail color tinting, category placement, and double-click opening behavior.</li>
+          <li><strong>IModuleInterface (Blue):</strong> Registers the asset type actions with <code>IAssetTools</code> when the editor module loads (<code>StartupModule()</code>) and unregisters them on shutdown (<code>ShutdownModule()</code>).</li>
+        </ul>
+
+        <h2>Code Example: Implementing QuestGraphFactory</h2>
+        
+        <p>
+          Below is a complete C++ implementation for a custom <code>UQuestGraph</code> asset factory and editor integration.
+        </p>
+
+        <h3>1. The Factory Class (QuestGraphFactory)</h3>
+        <p>Inherits from <code>UFactory</code> to define creation rules and override <code>FactoryCreateNew()</code>:</p>
+
+        <!-- QuestGraphFactory.h -->
+        <div class="code-container">
+          <div class="code-header">
+            <span>QuestGraphFactory.h</span>
+            <span>C++</span>
+          </div>
+          <pre><code><span class="code-macro">#pragma once</span>
+
+<span class="code-macro">#include</span> <span class="code-str">"CoreMinimal.h"</span>
+<span class="code-macro">#include</span> <span class="code-str">"Factories/Factory.h"</span>
+<span class="code-macro">#include</span> <span class="code-str">"QuestGraphFactory.generated.h"</span>
+
+<span class="code-cmnt">/**
+ * UQuestGraphFactory
+ * Custom factory class responsible for instantiating new UQuestGraph asset objects.
+ * Enables the "Add/New Asset" context menu option in the Content Browser.
+ */</span>
+<span class="code-macro">UCLASS</span>()
+<span class="code-kw">class</span> <span class="code-macro">QUESTEDITOR_API</span> <span class="code-type">UQuestGraphFactory</span> : <span class="code-kw">public</span> <span class="code-type">UFactory</span>
+{
+    <span class="code-macro">GENERATED_BODY</span>()
+
+<span class="code-kw">public</span>:
+    <span class="code-cmnt">/** Default constructor setting factory configuration flags */</span>
+    <span class="code-func">UQuestGraphFactory</span>();
+
+    <span class="code-cmnt">/**
+     * Factory creation method called by Unreal Editor when creating a new asset instance.
+     */</span>
+    <span class="code-kw">virtual</span> <span class="code-type">UObject</span>* <span class="code-func">FactoryCreateNew</span>(
+        <span class="code-type">UClass</span>* InClass, 
+        <span class="code-type">UObject</span>* InParent, 
+        <span class="code-type">FName</span> InName, 
+        <span class="code-type">EObjectFlags</span> Flags, 
+        <span class="code-type">UObject</span>* Context, 
+        <span class="code-type">FFeedbackContext</span>* Warn
+    ) <span class="code-kw">override</span>;
+};</code></pre>
+        </div>
+
+        <!-- QuestGraphFactory.cpp -->
+        <div class="code-container">
+          <div class="code-header">
+            <span>QuestGraphFactory.cpp</span>
+            <span>C++</span>
+          </div>
+          <pre><code><span class="code-macro">#include</span> <span class="code-str">"QuestGraphFactory.h"</span>
+<span class="code-macro">#include</span> <span class="code-str">"Quest/QuestGraph.h"</span>
+
+<span class="code-type">UQuestGraphFactory</span>::<span class="code-func">UQuestGraphFactory</span>()
+{
+    <span class="code-cmnt">// Specify the exact UObject subclass supported by this factory</span>
+    SupportedClass = <span class="code-type">UQuestGraph</span>::<span class="code-func">StaticClass</span>();
+
+    <span class="code-cmnt">// Enable creating new assets from scratch via Content Browser context menu</span>
+    bCreateNew = <span class="code-kw">true</span>;
+
+    <span class="code-cmnt">// Open the associated asset editor immediately after asset creation</span>
+    bEditAfterNew = <span class="code-kw">true</span>;
+}
+
+<span class="code-type">UObject</span>* <span class="code-type">UQuestGraphFactory</span>::<span class="code-func">FactoryCreateNew</span>(
+    <span class="code-type">UClass</span>* InClass, 
+    <span class="code-type">UObject</span>* InParent, 
+    <span class="code-type">FName</span> InName, 
+    <span class="code-type">EObjectFlags</span> Flags, 
+    <span class="code-type">UObject</span>* Context, 
+    <span class="code-type">FFeedbackContext</span>* Warn)
+{
+    <span class="code-cmnt">// Allocate and initialize a new UQuestGraph object inside the target package</span>
+    <span class="code-kw">return</span> <span class="code-func">NewObject</span>&lt;<span class="code-type">UQuestGraph</span>&gt;(InParent, InClass, InName, Flags);
+}</code></pre>
+        </div>
+
+        <h3>2. Asset Actions and Context Menu Integration</h3>
+        <p>Configures thumbnail color tinting, display names, and context menu placement under Gameplay:</p>
+
+        <!-- AssetTypeActions_QuestGraph.h -->
+        <div class="code-container">
+          <div class="code-header">
+            <span>AssetTypeActions_QuestGraph.h</span>
+            <span>C++</span>
+          </div>
+          <pre><code><span class="code-macro">#pragma once</span>
+
+<span class="code-macro">#include</span> <span class="code-str">"CoreMinimal.h"</span>
+<span class="code-macro">#include</span> <span class="code-str">"AssetTypeActions_Base.h"</span>
+
+<span class="code-cmnt">/**
+ * FAssetTypeActions_QuestGraph
+ * Defines appearance, context menu placement, and double-click actions in Content Browser.
+ */</span>
+<span class="code-kw">class</span> <span class="code-type">FAssetTypeActions_QuestGraph</span> : <span class="code-kw">public</span> <span class="code-type">FAssetTypeActions_Base</span>
+{
+<span class="code-kw">public</span>:
+    <span class="code-kw">virtual</span> <span class="code-type">FText</span> <span class="code-func">GetName</span>() <span class="code-kw">const override</span> { <span class="code-kw">return</span> <span class="code-macro">NSLOCTEXT</span>(<span class="code-str">"AssetTypeActions"</span>, <span class="code-str">"AssetTypeActions_QuestGraph"</span>, <span class="code-str">"Quest Graph"</span>); }
+    <span class="code-kw">virtual</span> <span class="code-type">FColor</span> <span class="code-func">GetTypeColor</span>() <span class="code-kw">const override</span> { <span class="code-kw">return</span> <span class="code-type">FColor</span>::<span class="code-func">FromHex</span>(<span class="code-str">"#32A852"</span>); } <span class="code-cmnt">// Emerald Green</span>
+    <span class="code-kw">virtual</span> <span class="code-type">UClass</span>* <span class="code-func">GetSupportedClass</span>() <span class="code-kw">const override</span>;
+    <span class="code-kw">virtual</span> <span class="code-type">uint32</span> <span class="code-func">GetCategories</span>() <span class="code-kw">override</span>;
+    <span class="code-kw">virtual void</span> <span class="code-func">OpenAssetEditor</span>(<span class="code-kw">const</span> <span class="code-type">TArray</span>&lt;<span class="code-type">UObject</span>*&gt;&amp; InObjects, <span class="code-type">TSharedPtr</span>&lt;<span class="code-kw">class</span> <span class="code-type">IToolkitHost</span>&gt; EditWithinLevelEditor) <span class="code-kw">override</span>;
+};</code></pre>
+        </div>
+
+        <!-- AssetTypeActions_QuestGraph.cpp -->
+        <div class="code-container">
+          <div class="code-header">
+            <span>AssetTypeActions_QuestGraph.cpp</span>
+            <span>C++</span>
+          </div>
+          <pre><code><span class="code-macro">#include</span> <span class="code-str">"AssetTypeActions_QuestGraph.h"</span>
+<span class="code-macro">#include</span> <span class="code-str">"Quest/QuestGraph.h"</span>
+
+<span class="code-type">UClass</span>* <span class="code-type">FAssetTypeActions_QuestGraph</span>::<span class="code-func">GetSupportedClass</span>() <span class="code-kw">const</span>
+{
+    <span class="code-kw">return</span> <span class="code-type">UQuestGraph</span>::<span class="code-func">StaticClass</span>();
+}
+
+<span class="code-type">uint32</span> <span class="code-type">FAssetTypeActions_QuestGraph</span>::<span class="code-func">GetCategories</span>()
+{
+    <span class="code-kw">return</span> <span class="code-type">EAssetTypeCategories</span>::Gameplay;
+}
+
+<span class="code-kw">void</span> <span class="code-type">FAssetTypeActions_QuestGraph</span>::<span class="code-func">OpenAssetEditor</span>(<span class="code-kw">const</span> <span class="code-type">TArray</span>&lt;<span class="code-type">UObject</span>*&gt;&amp; InObjects, <span class="code-type">TSharedPtr</span>&lt;<span class="code-type">IToolkitHost</span>&gt; EditWithinLevelEditor)
+{
+    <span class="code-type">FAssetTypeActions_Base</span>::<span class="code-func">OpenAssetEditor</span>(InObjects, EditWithinLevelEditor);
+}</code></pre>
+        </div>
+
+        <h3>3. Editor Module Registration</h3>
+        <p>Registers asset type actions with <code>IAssetTools</code> during editor startup and unregisters them on shutdown:</p>
+
+        <!-- QuestEditor.h -->
+        <div class="code-container">
+          <div class="code-header">
+            <span>QuestEditor.h</span>
+            <span>C++</span>
+          </div>
+          <pre><code><span class="code-macro">#pragma once</span>
+
+<span class="code-macro">#include</span> <span class="code-str">"CoreMinimal.h"</span>
+<span class="code-macro">#include</span> <span class="code-str">"Modules/ModuleManager.h"</span>
+<span class="code-macro">#include</span> <span class="code-str">"IAssetTypeActions.h"</span>
+
+<span class="code-kw">class</span> <span class="code-type">FQuestEditorModule</span> : <span class="code-kw">public</span> <span class="code-type">IModuleInterface</span>
+{
+<span class="code-kw">public</span>:
+    <span class="code-kw">virtual void</span> <span class="code-func">StartupModule</span>() <span class="code-kw">override</span>;
+    <span class="code-kw">virtual void</span> <span class="code-func">ShutdownModule</span>() <span class="code-kw">override</span>;
+
+<span class="code-kw">private</span>:
+    <span class="code-type">TSharedPtr</span>&lt;<span class="code-type">IAssetTypeActions</span>&gt; CreatedAssetTypeAction;
+};</code></pre>
+        </div>
+
+        <!-- QuestEditor.cpp -->
+        <div class="code-container">
+          <div class="code-header">
+            <span>QuestEditor.cpp</span>
+            <span>C++</span>
+          </div>
+          <pre><code><span class="code-macro">#include</span> <span class="code-str">"QuestEditor.h"</span>
+<span class="code-macro">#include</span> <span class="code-str">"AssetToolsModule.h"</span>
+<span class="code-macro">#include</span> <span class="code-str">"IAssetTools.h"</span>
+<span class="code-macro">#include</span> <span class="code-str">"AssetTypeActions_QuestGraph.h"</span>
+
+<span class="code-macro">#define</span> LOCTEXT_NAMESPACE <span class="code-str">"FQuestEditorModule"</span>
+
+<span class="code-kw">void</span> <span class="code-type">FQuestEditorModule</span>::<span class="code-func">StartupModule</span>()
+{
+    <span class="code-type">IAssetTools</span>&amp; AssetTools = <span class="code-type">FModuleManager</span>::<span class="code-func">LoadModuleChecked</span>&lt;<span class="code-type">FAssetToolsModule</span>&gt;(<span class="code-str">"AssetTools"</span>).<span class="code-func">Get</span>();
+    <span class="code-type">TSharedRef</span>&lt;<span class="code-type">IAssetTypeActions</span>&gt; Action = <span class="code-type">MakeShared</span>&lt;<span class="code-type">FAssetTypeActions_QuestGraph</span>&gt;();
+    CreatedAssetTypeAction = Action;
+
+    AssetTools.<span class="code-func">RegisterAssetTypeActions</span>(Action);
+}
+
+<span class="code-kw">void</span> <span class="code-type">FQuestEditorModule</span>::<span class="code-func">ShutdownModule</span>()
+{
+    <span class="code-kw">if</span> (<span class="code-type">FModuleManager</span>::<span class="code-func">Get</span>().<span class="code-func">IsModuleLoaded</span>(<span class="code-str">"AssetTools"</span>))
+    {
+        <span class="code-type">IAssetTools</span>&amp; AssetTools = <span class="code-type">FModuleManager</span>::<span class="code-func">GetModuleChecked</span>&lt;<span class="code-type">FAssetToolsModule</span>&gt;(<span class="code-str">"AssetTools"</span>).<span class="code-func">Get</span>();
+        <span class="code-kw">if</span> (CreatedAssetTypeAction.<span class="code-func">IsValid</span>())
+        {
+            AssetTools.<span class="code-func">UnregisterAssetTypeActions</span>(CreatedAssetTypeAction.<span class="code-func">ToSharedRef</span>());
+        }
+    }
+}
+
+<span class="code-macro">#undef</span> LOCTEXT_NAMESPACE
+    
+<span class="code-macro">IMPLEMENT_MODULE</span>(<span class="code-type">FQuestEditorModule</span>, QuestEditor)</code></pre>
+        </div>
+
+      </article>
+
+      <!-- Back to Blog Button -->
+      <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-light); text-align: center;">
+        <a href="blog.html" class="btn btn-primary">← Back to All Articles</a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 Ivan Larinin • Personal Portfolio & Blog</p>
+    </div>
+  </footer>
+
+  <!-- Interactive Scripts -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
