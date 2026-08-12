@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unreal Engine Object Flags: Understanding RF_Transactional | Ivan Larinin</title>
+  <meta name="description" content="Learn how RF_Transactional works in Unreal Engine C++ EObjectFlags to enable Undo (Ctrl+Z) and Redo support in custom editor tools.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Sticky Glassmorphic Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <span class="nav-brand-logo">IL</span>
+        <span class="nav-brand-text">IVAN LARININ</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="blog.html" class="btn btn-secondary btn-sm">📝 All Posts</a>
+        <a href="index.html" class="btn btn-secondary btn-sm">🏠 Portfolio</a>
+        <a href="https://github.com/Veltrynox" target="_blank" rel="noopener" class="btn btn-primary btn-sm">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+    
+    <div class="article-container">
+      
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <a href="blog.html">Blog</a>
+        <span>/</span>
+        <span>RF_Transactional</span>
+      </nav>
+
+      <!-- Post Header -->
+      <header class="post-header">
+        <div class="article-meta" style="margin-bottom: 1rem;">
+          <span>📅 August 2026</span>
+          <span>•</span>
+          <span>⏱️ 2 min read</span>
+          <span>•</span>
+          <span class="tag tag-csharp" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.3);">Unreal Engine 5</span>
+          <span class="tag tag-cpp">C++</span>
+          <span class="tag tag-unity">EObjectFlags</span>
+        </div>
+        <h1 class="post-title">Unreal Engine Object Flags: Understanding RF_Transactional</h1>
+      </header>
+
+      <!-- Post Content -->
+      <article class="post-content">
+        
+        <h2>1. What Does RF_Transactional Stand For?</h2>
+        
+        <p>
+          In Unreal Engine C++, object flags control object lifecycles, serialization, and editor behaviors.
+        </p>
+
+        <ul>
+          <li><strong>RF_</strong> = <strong>Runtime Flag</strong> (Bits defined in the <code>EObjectFlags</code> enumeration).</li>
+          <li><strong>Transactional</strong> = <strong>Capable of participating in Undo and Redo operations</strong>.</li>
+        </ul>
+
+        <p>
+          In software engineering, a transaction is an action that can either be committed permanently or completely rolled back using Ctrl+Z.
+        </p>
+
+        <h2>2. Why Do We Need This Flag for Objects?</h2>
+
+        <p>
+          Unreal Engine constructs millions of transient objects at runtime (projectiles, enemy AI states, particle systems). By default, to save memory and performance, the engine does not track modification history for standard objects.
+        </p>
+
+        <p>
+          However, inside the Unreal Editor, designers constantly edit graph nodes, property values, and level assets, expecting Ctrl+Z (Undo) and Ctrl+Y (Redo) to work reliably.
+        </p>
+
+        <p>
+          When creating a custom object with the <code>RF_Transactional</code> flag:
+        </p>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span>Creating a Transactional Object in C++</span>
+            <span>C++</span>
+          </div>
+          <pre><code><span class="code-type">UQuestNode</span>* NewNode = <span class="code-func">NewObject</span>&lt;<span class="code-type">UQuestNode</span>&gt;(InParent, InClass, InName, Flags | <span class="code-macro">RF_Transactional</span>);</code></pre>
+        </div>
+
+        <p>
+          This flag tells Unreal Engine to record all property modifications and lifecycle state changes for this object into the system Undo Buffer.
+        </p>
+
+      </article>
+
+      <!-- Back to Blog Button -->
+      <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-light); text-align: center;">
+        <a href="blog.html" class="btn btn-primary">← Back to All Articles</a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 Ivan Larinin • Personal Portfolio & Blog</p>
+    </div>
+  </footer>
+
+  <!-- Interactive Scripts -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
