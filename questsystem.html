@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building a Custom Quest System Plugin in Unreal Engine 5 | Ivan Larinin</title>
+  <meta name="description" content="An educational C++ plugin for Unreal Engine 5 featuring a runtime quest manager subsystem and a custom Slate visual node graph editor toolkit.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Sticky Glassmorphic Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <span class="nav-brand-logo">IL</span>
+        <span class="nav-brand-text">IVAN LARININ</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="blog.html" class="btn btn-secondary btn-sm">📝 All Posts</a>
+        <a href="index.html" class="btn btn-secondary btn-sm">🏠 Portfolio</a>
+        <a href="https://github.com/Veltrynox/UE5-QuestSystem" target="_blank" rel="noopener" class="btn btn-primary btn-sm">GitHub Repo</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+    
+    <div class="article-container">
+      
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <a href="blog.html">Blog</a>
+        <span>/</span>
+        <span>Quest System Plugin</span>
+      </nav>
+
+      <!-- Post Header -->
+      <header class="post-header">
+        <div class="article-meta" style="margin-bottom: 1rem;">
+          <span>📅 August 2026</span>
+          <span>•</span>
+          <span>⏱️ 5 min read</span>
+          <span>•</span>
+          <span class="tag tag-csharp" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.3);">Unreal Engine 5</span>
+          <span class="tag tag-cpp">C++ Plugin</span>
+          <span class="tag tag-unity">Slate UI / Graph Editor</span>
+        </div>
+        <h1 class="post-title">Building a Custom Quest System Plugin in Unreal Engine 5</h1>
+      </header>
+
+      <!-- Post Content -->
+      <article class="post-content">
+        
+        <p>
+          I developed a custom Quest System Plugin from scratch to get a better hands-on understanding of Unreal Engine C++ architecture and editor extensions.
+        </p>
+
+        <p>
+          The main goal was learning how Unreal Engine separates lightweight runtime gameplay data from editor toolkits, Slate UI widgets, and visual graph schemas.
+        </p>
+
+        <div style="margin: 2rem 0; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-light);">
+          <img src="assets/media/quest_system_graph.png" alt="Unreal Engine Quest System Graph Editor" style="width: 100%; display: block;">
+        </div>
+
+        <div style="margin: 2rem 0; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-light);">
+          <video controls autoplay loop muted playsinline style="width: 100%; display: block;">
+            <source src="assets/media/quest_system.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+
+        <h2>Plugin Architecture</h2>
+
+        <p>
+          Unreal Engine plugins split runtime logic from editor-only code into two distinct modules:
+        </p>
+
+        <h3>1. The Runtime Module (Quest)</h3>
+        <p>
+          Contains raw gameplay data compiled into shipped builds:
+        </p>
+        <ul>
+          <li><strong>UQuestGraph:</strong> Main data asset storing quest nodes, connections, and graph entry points.</li>
+          <li><strong>UQuestNode &amp; UQuestCondition:</strong> Objective nodes tracking quest states, parent-child links, and evaluation conditions.</li>
+          <li><strong>UQuestManager:</strong> World subsystem that initializes per level to track active player quests automatically.</li>
+        </ul>
+
+        <h3>2. The Editor Extension Module (QuestEditor)</h3>
+        <p>
+          Provides custom tools and visual node editing inside the editor:
+        </p>
+        <ul>
+          <li><strong>UQuestGraphFactory:</strong> Custom factory permitting asset creation from the Content Browser right-click menu.</li>
+          <li><strong>FAssetTypeActions_QuestGraph:</strong> Configures Content Browser branding, thumbnail colors, and double-click actions.</li>
+          <li><strong>UEdGraph_Quest &amp; UEdGraphSchema_Quest:</strong> Defines node connection logic, pin validation, context menus, and visual graph rules.</li>
+          <li><strong>FQuestGraphAssetEditor:</strong> Standalone Slate graph editor toolkit providing a node canvas, property inspector panels, and graph wiring.</li>
+        </ul>
+
+        <h2>Features</h2>
+
+        <ul>
+          <li><strong>Custom Editor Window &amp; Slate Canvas:</strong> Integrated visual editor with graph navigation, node creation, wire connections, and a Details Panel inspector.</li>
+          <li><strong>Node Types:</strong>
+            <ul style="margin-top: 0.5rem;">
+              <li><strong>Start Node (UEdGraphNode_QuestStart):</strong> Output-only entry point node.</li>
+              <li><strong>Step Node (UEdGraphNode_Quest):</strong> Dual-pin node for active objectives.</li>
+              <li><strong>End Node (UEdGraphNode_QuestEnd):</strong> Input-only completion node.</li>
+              <li><strong>Comment Frame (UEdGraphNode_Comment):</strong> Resizable organization box (C key shortcut).</li>
+            </ul>
+          </li>
+          <li><strong>Multi-Root DAG Support:</strong> Multiple independent quest branches executing concurrently.</li>
+          <li><strong>Milestone Styling:</strong> Optional <code>bIsMainQuest</code> flag for visual hierarchy ([MAIN QUEST] badge).</li>
+          <li><strong>Activation Thresholds (RequiredCompletionsCount):</strong> Configurable parent completion requirement supporting AND/OR/Optional logic.</li>
+          <li><strong>Passive Conditions (UQuestCondition):</strong> Instanced condition checks (World Tags, Node States, or custom Blueprint conditions) evaluated prior to step completion.</li>
+          <li><strong>Runtime Manager (UQuestManager):</strong> World subsystem handling step transitions, object interactions, and world state flags.</li>
+          <li><strong>Runtime JSON Serialization:</strong> Save and restore active graph execution state to and from JSON files.</li>
+        </ul>
+
+        <div style="margin-top: 2.5rem; padding: 1.5rem; background: var(--bg-card); border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+          <h3 style="margin-top: 0;">📂 GitHub Source Code Repository</h3>
+          <p style="margin-bottom: 1rem;">Check out the full C++ plugin source code and editor module on GitHub:</p>
+          <a href="https://github.com/Veltrynox/UE5-QuestSystem" target="_blank" rel="noopener" class="btn btn-primary btn-sm">View Repository on GitHub →</a>
+        </div>
+
+      </article>
+
+      <!-- Back to Blog Button -->
+      <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-light); text-align: center;">
+        <a href="blog.html" class="btn btn-primary">← Back to All Articles</a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 Ivan Larinin • Personal Portfolio & Blog</p>
+    </div>
+  </footer>
+
+  <!-- Interactive Scripts -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
