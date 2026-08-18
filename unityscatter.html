@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unity Editor Extension: Custom Scatter Brush Tool | Ivan Larinin</title>
+  <meta name="description" content="Custom Unity EditorWindow script for painting prefabs onto terrain geometry with surface normal alignment and hotkey switching.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Sticky Glassmorphic Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <span class="nav-brand-logo">IL</span>
+        <span class="nav-brand-text">IVAN LARININ</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="blog.html" class="btn btn-secondary btn-sm">📝 All Posts</a>
+        <a href="index.html" class="btn btn-secondary btn-sm">🏠 Portfolio</a>
+        <a href="https://github.com/Veltrynox" target="_blank" rel="noopener" class="btn btn-primary btn-sm">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+    
+    <div class="article-container">
+      
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <a href="blog.html">Blog</a>
+        <span>/</span>
+        <span>Unity Scatter Brush</span>
+      </nav>
+
+      <!-- Post Header -->
+      <header class="post-header">
+        <div class="article-meta" style="margin-bottom: 1rem;">
+          <span>📅 October 2025</span>
+          <span>•</span>
+          <span>⏱️ 3 min read</span>
+          <span>•</span>
+          <span class="tag tag-unity">Unity</span>
+          <span class="tag tag-csharp">C#</span>
+          <span class="tag tag-unity">Editor Tools</span>
+        </div>
+        <h1 class="post-title">Unity Editor Extension: Custom Scatter Brush Tool</h1>
+      </header>
+
+      <!-- Post Content -->
+      <article class="post-content">
+        
+        <p>
+          Manually dragging prefabs into a Unity scene, positioning them on terrain surfaces, and adjusting rotations is tedious when dressing environments.
+        </p>
+
+        <p>
+          To speed up world building, I wrote a custom Unity <code>EditorWindow</code> tool called <strong>Scatter Brush</strong>. It allows users to create a palette of gameobject prefabs and paint them directly onto terrain geometry in the Scene View.
+        </p>
+
+        <div style="margin: 2rem 0; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-light);">
+          <img src="assets/media/scattering_unity.gif" alt="Unity Scatter Brush Tool Demonstration" style="width: 100%; display: block;">
+        </div>
+
+        <h2>Tool Features and Implementation Details</h2>
+
+        <ul>
+          <li><strong>Scene View Raycasting:</strong> Subscribes to <code>SceneView.duringSceneGui</code> to cast rays from the mouse cursor onto scene geometry in real time.</li>
+          <li><strong>Visual Feedback Handles:</strong> Draws a cyan circle gizmo (<code>Handles.DrawWireDisc</code>) aligned to the surface normal under the cursor.</li>
+          <li><strong>Prefab Palette Hotkeys:</strong> Pressing number keys (1 to 9) instantly switches the active prefab without needing to focus back on the Inspector.</li>
+          <li><strong>Normal Alignment and Randomization:</strong> Instantiated prefabs align automatically to terrain surface normals while applying a randomized Y-axis rotation for natural variation.</li>
+          <li><strong>Undo History Support:</strong> Registers every instantiated object with <code>Undo.RegisterCreatedObjectUndo</code> so Ctrl+Z works as expected.</li>
+        </ul>
+
+        <h2>C# Source Code</h2>
+
+        <!-- Code Container -->
+        <div class="code-container">
+          <div class="code-header">
+            <span>ScatterBrushWindow.cs</span>
+            <span>C#</span>
+          </div>
+          <pre><code><span class="code-macro">using</span> UnityEngine;
+<span class="code-macro">using</span> UnityEditor;
+<span class="code-macro">using</span> System.Collections.Generic;
+
+<span class="code-kw">namespace</span> SubnauticaClone
+{
+    <span class="code-cmnt">/// &lt;summary&gt;</span>
+    <span class="code-cmnt">/// This tool allows users to select from a palette of prefabs and "paint" them onto the scene.</span>
+    <span class="code-cmnt">/// &lt;/summary&gt;</span>
+    <span class="code-kw">public class</span> <span class="code-type">ScatterBrushWindow</span> : <span class="code-type">EditorWindow</span>
+    {
+        <span class="code-kw">public</span> <span class="code-type">List</span>&lt;<span class="code-type">GameObject</span>&gt; palette = <span class="code-kw">new</span> <span class="code-type">List</span>&lt;<span class="code-type">GameObject</span>&gt;();
+        <span class="code-kw">public</span> <span class="code-type">GameObject</span> terrain;
+
+        <span class="code-kw">private int</span> selectedIndex = 0;
+
+        <span class="code-type">string</span> toolName = <span class="code-str">"Scatter Brush"</span>;
+        <span class="code-type">float</span> brushRadius = 5f;
+        <span class="code-type">bool</span> isPainting = <span class="code-kw">false</span>;
+
+        <span class="code-kw">private</span> <span class="code-type">SerializedObject</span> serializedObj;
+
+        [<span class="code-macro">MenuItem</span>(<span class="code-str">"Tools/Scatter Brush"</span>)]
+        <span class="code-kw">public static void</span> <span class="code-func">ShowWindow</span>()
+        {
+            <span class="code-func">GetWindow</span>&lt;<span class="code-type">ScatterBrushWindow</span>&gt;(<span class="code-str">"Scatter Brush"</span>);
+        }
+
+        <span class="code-kw">private void</span> <span class="code-func">OnEnable</span>()
+        {
+            <span class="code-type">SceneView</span>.duringSceneGui += OnSceneGUI;
+            serializedObj = <span class="code-kw">new</span> <span class="code-type">SerializedObject</span>(<span class="code-kw">this</span>);
+        }
+
+        <span class="code-kw">private void</span> <span class="code-func">OnDisable</span>()
+        {
+            <span class="code-type">SceneView</span>.duringSceneGui -= OnSceneGUI;
+        }
+
+        <span class="code-kw">private void</span> <span class="code-func">OnGUI</span>()
+        {
+            <span class="code-type">GUILayout</span>.<span class="code-func">Label</span>(toolName, <span class="code-type">EditorStyles</span>.boldLabel);
+
+            serializedObj.<span class="code-func">Update</span>();
+            <span class="code-type">SerializedProperty</span> paletteProp = serializedObj.<span class="code-func">FindProperty</span>(<span class="code-str">"palette"</span>);
+            <span class="code-type">SerializedProperty</span> terrainProp = serializedObj.<span class="code-func">FindProperty</span>(<span class="code-str">"terrain"</span>);
+
+            <span class="code-type">EditorGUILayout</span>.<span class="code-func">PropertyField</span>(paletteProp, <span class="code-kw">new</span> <span class="code-type">GUIContent</span>(<span class="code-str">"Brush Palette"</span>), <span class="code-kw">true</span>);
+            <span class="code-type">EditorGUILayout</span>.<span class="code-func">PropertyField</span>(terrainProp, <span class="code-kw">new</span> <span class="code-type">GUIContent</span>(<span class="code-str">"Terrain Parent"</span>), <span class="code-kw">true</span>);
+            serializedObj.<span class="code-func">ApplyModifiedProperties</span>();
+
+            <span class="code-type">GUILayout</span>.<span class="code-func">Space</span>(10);
+            brushRadius = <span class="code-type">EditorGUILayout</span>.<span class="code-func">Slider</span>(<span class="code-str">"Brush Radius"</span>, brushRadius, 0.5f, 10f);
+
+            <span class="code-kw">if</span> (palette.Count &gt; 0)
+            {
+                selectedIndex = <span class="code-type">Mathf</span>.<span class="code-func">Clamp</span>(selectedIndex, 0, palette.Count - 1);
+                <span class="code-type">string</span> currentName = palette[selectedIndex] != <span class="code-kw">null</span> ? palette[selectedIndex].name : <span class="code-str">"None"</span>;
+                <span class="code-type">GUILayout</span>.<span class="code-func">Label</span>(<span class="code-str">$"Selected [Key {selectedIndex + 1}]: {currentName}"</span>, <span class="code-type">EditorStyles</span>.helpBox);
+            }
+            <span class="code-kw">else</span>
+            {
+                <span class="code-type">GUILayout</span>.<span class="code-func">Label</span>(<span class="code-str">"Add items to Palette to start!"</span>, <span class="code-type">EditorStyles</span>.label);
+            }
+
+            <span class="code-kw">if</span> (<span class="code-type">GUILayout</span>.<span class="code-func">Button</span>(isPainting ? <span class="code-str">"Stop Painting"</span> : <span class="code-str">"Start Painting"</span>))
+            {
+                isPainting = !isPainting;
+            }
+        }
+
+        <span class="code-kw">private void</span> <span class="code-func">OnSceneGUI</span>(<span class="code-type">SceneView</span> sceneView)
+        {
+            <span class="code-kw">if</span> (!isPainting || palette.Count == 0) <span class="code-kw">return</span>;
+
+            <span class="code-type">Event</span> e = <span class="code-type">Event</span>.current;
+
+            <span class="code-kw">if</span> (e.type == <span class="code-type">EventType</span>.KeyDown)
+            {
+                <span class="code-kw">int</span> numberPressed = (<span class="code-kw">int</span>)e.keyCode - (<span class="code-kw">int</span>)<span class="code-type">KeyCode</span>.Alpha1;
+
+                <span class="code-kw">if</span> (numberPressed &gt;= 0 &amp;&amp; numberPressed &lt; palette.Count)
+                {
+                    selectedIndex = numberPressed;
+                    e.<span class="code-func">Use</span>();
+                    sceneView.<span class="code-func">Repaint</span>();
+                }
+            }
+
+            <span class="code-type">Ray</span> ray = <span class="code-type">HandleUtility</span>.<span class="code-func">GUIPointToWorldRay</span>(e.mousePosition);
+            <span class="code-kw">if</span> (<span class="code-type">Physics</span>.<span class="code-func">Raycast</span>(ray, <span class="code-kw">out</span> <span class="code-type">RaycastHit</span> hit))
+            {
+                <span class="code-type">Handles</span>.color = <span class="code-type">Color</span>.cyan;
+                <span class="code-type">Handles</span>.<span class="code-func">DrawWireDisc</span>(hit.point, hit.normal, brushRadius);
+
+                <span class="code-type">GameObject</span> currentPrefab = palette[selectedIndex];
+                <span class="code-kw">if</span> (currentPrefab != <span class="code-kw">null</span>)
+                {
+                    <span class="code-type">Handles</span>.<span class="code-func">Label</span>(hit.point + <span class="code-type">Vector3</span>.up, <span class="code-str">$"Active: {currentPrefab.name}"</span>);
+                }
+
+                <span class="code-kw">if</span> (e.type == <span class="code-type">EventType</span>.MouseDown &amp;&amp; e.button == 0)
+                {
+                    <span class="code-func">PaintObject</span>(hit.point, hit.normal);
+                    e.<span class="code-func">Use</span>();
+                }
+            }
+
+            sceneView.<span class="code-func">Repaint</span>();
+        }
+
+        <span class="code-kw">private void</span> <span class="code-func">PaintObject</span>(<span class="code-type">Vector3</span> position, <span class="code-type">Vector3</span> normal)
+        {
+            <span class="code-kw">if</span> (selectedIndex &gt;= palette.Count) <span class="code-kw">return</span>;
+            <span class="code-type">GameObject</span> prefabToPaint = palette[selectedIndex];
+            <span class="code-kw">if</span> (prefabToPaint == <span class="code-kw">null</span>) <span class="code-kw">return</span>;
+
+            <span class="code-type">GameObject</span> newObj = (<span class="code-type">GameObject</span>)<span class="code-type">PrefabUtility</span>.<span class="code-func">InstantiatePrefab</span>(prefabToPaint);
+            newObj.transform.parent = terrain.transform;
+            newObj.transform.position = position;
+            newObj.transform.up = normal;
+            newObj.transform.<span class="code-func">Rotate</span>(0, <span class="code-type">Random</span>.<span class="code-func">Range</span>(0, 360), 0);
+
+            <span class="code-type">Undo</span>.<span class="code-func">RegisterCreatedObjectUndo</span>(newObj, <span class="code-str">"Paint Object"</span>);
+        }
+    }
+}</code></pre>
+        </div>
+
+      </article>
+
+      <!-- Back to Blog Button -->
+      <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-light); text-align: center;">
+        <a href="blog.html" class="btn btn-primary">← Back to All Articles</a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 Ivan Larinin • Personal Portfolio & Blog</p>
+    </div>
+  </footer>
+
+  <!-- Interactive Scripts -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-Time Underwater Caustics Projector Shader (URP) | Ivan Larinin</title>
+  <meta name="description" content="Custom URP ShaderLab & HLSL caustics projector shader with depth reconstruction, chromatic aberration, mip-based blur faking, and ocean wave distortion.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Sticky Glassmorphic Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <span class="nav-brand-logo">IL</span>
+        <span class="nav-brand-text">IVAN LARININ</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="blog.html" class="btn btn-secondary btn-sm">📝 All Posts</a>
+        <a href="index.html" class="btn btn-secondary btn-sm">🏠 Portfolio</a>
+        <a href="https://github.com/Veltrynox" target="_blank" rel="noopener" class="btn btn-primary btn-sm">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+    
+    <div class="article-container">
+      
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <a href="blog.html">Blog</a>
+        <span>/</span>
+        <span>Caustics Projector</span>
+      </nav>
+
+      <!-- Post Header -->
+      <header class="post-header">
+        <div class="article-meta" style="margin-bottom: 1rem;">
+          <span>📅 November 2025</span>
+          <span>•</span>
+          <span>⏱️ 4 min read</span>
+          <span>•</span>
+          <span class="tag tag-shader">HLSL</span>
+          <span class="tag tag-unity">Unity URP</span>
+          <span class="tag tag-shader">Shaders</span>
+        </div>
+        <h1 class="post-title">Real-Time Underwater Caustics Projector Shader (URP)</h1>
+      </header>
+
+      <!-- Post Content -->
+      <article class="post-content">
+        
+        <p>
+          Simulating light refraction underwater requires dynamic caustics that project onto seabed terrain and submerged geometry without requiring expensive real-time light rendering passes.
+        </p>
+
+        <p>
+          This custom Universal Render Pipeline (URP) ShaderLab and HLSL shader projects animated caustics using depth-reconstructed world coordinates, ocean wave normal distortion, dual-layer panning, chromatic aberration, and mip-based blur faking.
+        </p>
+
+        <div style="margin: 2rem 0; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-light);">
+          <img src="assets/media/caustic_shader.gif" alt="Real-Time Underwater Caustics Projector Demonstration" style="width: 100%; display: block;">
+        </div>
+
+        <div class="callout-box">
+          <div class="callout-title">⚡ Performance & Technical Highlights:</div>
+          <p>
+            • <strong>Techniques Used:</strong> Two blended textures, Chromatic Aberrations, and Mip-based blur faking.<br>
+            • <strong>Measured Performance:</strong> 2.7ms @ 1080p rendering resolution.
+          </p>
+        </div>
+
+        <h2>Key Shader Features</h2>
+
+        <ul>
+          <li><strong>World-Space Depth Projection:</strong> Reconstructs 3D world positions from the scene depth buffer using <code>SampleSceneDepth</code> and <code>ComputeWorldSpacePosition</code>.</li>
+          <li><strong>Projector Box Clipping:</strong> Converts world coordinates into local object space (<code>TransformWorldToObject</code>) and discards pixels outside the projector volume with smooth edge falloff (<code>smoothstep</code>).</li>
+          <li><strong>Wave Normal Refraction:</strong> Intersects camera view rays with the water surface level (<code>_SurfaceY</code>), fetches ocean wave normals (<code>GetWaterSurfaceData</code>), and distorts UV coordinates dynamically.</li>
+          <li><strong>Dual-Layer Animated Blending:</strong> Pans two caustic texture layers at different speeds (<code>_Speed1</code> and <code>_Speed2</code>) and combines them using <code>min(col1, col2)</code> to create sharp, evolving caustic patterns.</li>
+          <li><strong>Chromatic Aberration & Mip Blur:</strong> Offsets R, G, and B texture sampling channels separately across the UV space and samples texture MIP levels for cheap blur faking.</li>
+        </ul>
+
+        <h2>HLSL Shader Source Code</h2>
+
+        <!-- Code Container -->
+        <div class="code-container">
+          <div class="code-header">
+            <span>CausticsProjector.shader</span>
+            <span>HLSL / URP</span>
+          </div>
+          <pre><code><span class="code-kw">Shader</span> <span class="code-str">"PS/CausticsProjector"</span>
+{
+    <span class="code-kw">Properties</span>
+    {
+        [<span class="code-macro">Header</span>(Main Settings)]
+        _MainTex (<span class="code-str">"Caustic Texture"</span>, 2D) = <span class="code-str">"black"</span> {}
+        [<span class="code-macro">HDR</span>] _Color(<span class="code-str">"Tint Color"</span>, <span class="code-kw">Color</span>) = (1, 1, 2, 1)
+        _Brightness (<span class="code-str">"Brightness"</span>, Range(0, 5)) = 1.0
+
+        [<span class="code-macro">Header</span>(Projection)]
+        _Scale(<span class="code-str">"Texture Scale"</span>, Float) = 2.0
+        _Speed1 (<span class="code-str">"Layer 1 Speed"</span>, Vector) = (0.05, 0.05, 0, 0)
+        _Speed2 (<span class="code-str">"Layer 2 Speed"</span>, Vector) = (-0.03, 0.04, 0, 0)
+
+        [<span class="code-macro">Header</span>(Refraction)]
+        _DistortionStrength (<span class="code-str">"Distortion Strength"</span>, Range(0, 2.0)) = 0.5
+
+        [<span class="code-macro">Header</span>(Fading)]
+        _SurfaceY (<span class="code-str">"Surface Y Level"</span>, Range(-10, 10)) = 0.0
+        _FadeY_min (<span class="code-str">"Fade Y Min"</span>, Range(0, -60)) = -50.0
+        _FadeY_max (<span class="code-str">"Fade Y Max"</span>, Range(0, 5)) = 0.4
+        _Softness(<span class="code-str">"Edge Fade"</span>, Range(0.001, 0.5)) = 0.2
+
+        [<span class="code-macro">Header</span>(FX)]
+        _Aberration(<span class="code-str">"Chromatic Aberration"</span>, Range(0, 0.02)) = 0.005
+
+        [<span class="code-macro">Header</span>(Blur)]
+        _BlurSteps(<span class="code-str">"Blur Steps"</span>, Int) = 0
+    }
+
+    <span class="code-kw">SubShader</span>
+    {
+        <span class="code-kw">Tags</span> { <span class="code-str">"RenderType"</span>=<span class="code-str">"Transparent"</span> <span class="code-str">"Queue"</span>=<span class="code-str">"Transparent+100"</span> <span class="code-str">"RenderPipeline"</span> = <span class="code-str">"UniversalPipeline"</span> }
+
+        <span class="code-kw">Pass</span>
+        {
+            <span class="code-kw">Cull</span> Front
+            <span class="code-kw">ZTest</span> Greater
+            <span class="code-kw">ZWrite</span> Off
+            <span class="code-kw">Blend</span> One One
+
+            HLSLPROGRAM
+            <span class="code-macro">#pragma</span> vertex vert
+            <span class="code-macro">#pragma</span> fragment frag
+
+            <span class="code-macro">#include</span> <span class="code-str">"Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"</span>
+            <span class="code-macro">#include</span> <span class="code-str">"Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"</span>
+            <span class="code-macro">#include</span> <span class="code-str">"Assets/Materials/FX/Ocean/WaterCommon.hlsl"</span>
+
+            <span class="code-kw">struct</span> <span class="code-type">Attributes</span>
+            {
+                <span class="code-type">float4</span> positionOS : POSITION;
+                <span class="code-type">float2</span> uv         : TEXCOORD1;
+            };
+
+            <span class="code-kw">struct</span> <span class="code-type">Varyings</span>
+            {
+                <span class="code-type">float4</span> positionCS : SV_POSITION;
+                <span class="code-type">float4</span> screenPos  : TEXCOORD0;
+                <span class="code-type">float2</span> uv         : TEXCOORD1;
+                <span class="code-type">float3</span> rayDirWS   : TEXCOORD3;
+            };
+
+            TEXTURE2D(_MainTex);
+            SAMPLER(sampler_MainTex);
+
+            <span class="code-macro">CBUFFER_START</span>(UnityPerMaterial)
+                <span class="code-type">float4</span> _MainTex_ST;
+                <span class="code-type">float4</span> _Color;
+                <span class="code-type">float</span> _Brightness;
+                <span class="code-type">float</span> _Scale;
+                <span class="code-type">float4</span> _Speed1;
+                <span class="code-type">float4</span> _Speed2;
+                <span class="code-type">float</span> _DistortionStrength;
+                <span class="code-type">float</span> _SurfaceY;
+                <span class="code-type">float</span> _FadeY_min;
+                <span class="code-type">float</span> _FadeY_max;
+                <span class="code-type">float</span> _Softness;
+                <span class="code-type">float</span> _Aberration;
+                <span class="code-type">float</span> _BlurSteps;
+            <span class="code-macro">CBUFFER_END</span>
+
+            <span class="code-type">Varyings</span> <span class="code-func">vert</span>(<span class="code-type">Attributes</span> input)
+            {
+                <span class="code-type">Varyings</span> output;
+                output.positionCS = <span class="code-func">TransformObjectToHClip</span>(input.positionOS.xyz);
+                output.screenPos = <span class="code-func">ComputeScreenPos</span>(output.positionCS);
+                output.uv = <span class="code-func">TRANSFORM_TEX</span>(input.uv, _MainTex);
+
+                <span class="code-type">float3</span> worldPos = <span class="code-func">TransformObjectToWorld</span>(input.positionOS.xyz);
+                output.rayDirWS = <span class="code-func">normalize</span>(worldPos - _WorldSpaceCameraPos);
+
+                <span class="code-kw">return</span> output;
+            }
+
+            <span class="code-type">float3</span> <span class="code-func">SampleCaustics</span>(<span class="code-type">float2</span> uv, <span class="code-type">int</span> lod = 0)
+            {
+                <span class="code-type">float</span> r = <span class="code-func">SAMPLE_TEXTURE2D_LOD</span>(_MainTex, sampler_MainTex, uv + <span class="code-type">float2</span>(_Aberration, 0), lod).r;
+                <span class="code-type">float</span> g = <span class="code-func">SAMPLE_TEXTURE2D_LOD</span>(_MainTex, sampler_MainTex, uv, lod).g;
+                <span class="code-type">float</span> b = <span class="code-func">SAMPLE_TEXTURE2D_LOD</span>(_MainTex, sampler_MainTex, uv - <span class="code-type">float2</span>(_Aberration, 0), lod).b;
+                <span class="code-kw">return</span> <span class="code-type">float3</span>(r, g, b);
+            }
+
+            <span class="code-type">float4</span> <span class="code-func">frag</span>(<span class="code-type">Varyings</span> input) : SV_Target
+            {
+                <span class="code-cmnt">// --- PROJECTION LOGIC ---</span>
+                <span class="code-type">float2</span> screenUV = input.screenPos.xy / input.screenPos.w;
+                <span class="code-type">float</span> rawDepth = <span class="code-func">SampleSceneDepth</span>(screenUV);
+                <span class="code-type">float3</span> worldPos = <span class="code-func">ComputeWorldSpacePosition</span>(screenUV, rawDepth, UNITY_MATRIX_I_VP);
+                <span class="code-type">float3</span> objectPos = <span class="code-func">TransformWorldToObject</span>(worldPos);
+
+                <span class="code-type">float3</span> bounds = <span class="code-func">abs</span>(objectPos);
+                <span class="code-kw">if</span> (bounds.x &gt; 0.5 || bounds.y &gt; 0.5 || bounds.z &gt; 0.5) <span class="code-kw">discard</span>;
+
+                <span class="code-type">float</span> edgeFade = 1.0 - <span class="code-func">max</span>(<span class="code-func">max</span>(<span class="code-func">smoothstep</span>(0.5-_Softness, 0.5, bounds.x),
+                                               <span class="code-func">smoothstep</span>(0.5-_Softness, 0.5, bounds.y)),
+                                               <span class="code-func">smoothstep</span>(0.5-_Softness, 0.5, bounds.z));
+
+                <span class="code-cmnt">// --- DISTORTION ---</span>
+                <span class="code-type">float3</span> camPos = _WorldSpaceCameraPos;
+                <span class="code-type">float3</span> rayDir = <span class="code-func">normalize</span>(worldPos - camPos);
+                <span class="code-type">float</span> distToWater = (_SurfaceY - camPos.y) / rayDir.y;
+                <span class="code-type">float3</span> waterSurfacePos = camPos + rayDir * distToWater;
+                <span class="code-type">float3</span> waveDisp, waveNormal;
+                <span class="code-func">GetWaterSurfaceData</span>(waterSurfacePos, 0, waveDisp, waveNormal);
+                <span class="code-type">float2</span> distortion = waveNormal.xz * _DistortionStrength;
+                <span class="code-type">float2</span> baseUV = (worldPos.xz * _Scale) + distortion;
+
+                <span class="code-type">float</span> steps = <span class="code-func">max</span>(_BlurSteps, 2);
+                <span class="code-type">float2</span> uv1 = baseUV + (_Time.y * _Speed1.xy);
+                <span class="code-type">float2</span> uv2 = baseUV + (_Time.y * _Speed2.xy);
+
+                <span class="code-cmnt">// --- FADING LOGIC ---</span>
+                <span class="code-type">float</span> invFadeMinRange = <span class="code-func">rcp</span>(_SurfaceY - _FadeY_min);
+                <span class="code-type">float</span> invFadeMaxRange = <span class="code-func">rcp</span>(_FadeY_max);
+
+                <span class="code-type">float</span> fadeMin = <span class="code-func">saturate</span>((worldPos.y - _FadeY_min) * invFadeMinRange);
+                <span class="code-type">float</span> fadeMax = 1.0 - <span class="code-func">saturate</span>((worldPos.y + _SurfaceY) * invFadeMaxRange);
+                <span class="code-type">float</span> fadeHeight = <span class="code-func">min</span>(fadeMin, fadeMax);
+
+                <span class="code-type">float3</span> col1 = <span class="code-func">SampleCaustics</span>(uv1, _BlurSteps);
+                <span class="code-type">float3</span> col2 = <span class="code-func">SampleCaustics</span>(uv2, _BlurSteps);
+
+                <span class="code-type">float3</span> finalColor = <span class="code-func">min</span>(col1, col2);
+
+                finalColor /= steps;
+
+                <span class="code-cmnt">// --- FINAL COLOR LOGIC ---</span>
+                finalColor *= _Color.rgb * _Brightness * edgeFade * fadeHeight;
+
+                <span class="code-kw">return</span> <span class="code-type">float4</span>(finalColor, 1.0);
+            }
+            ENDHLSL
+        }
+    }
+}</code></pre>
+        </div>
+
+      </article>
+
+      <!-- Back to Blog Button -->
+      <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-light); text-align: center;">
+        <a href="blog.html" class="btn btn-primary">← Back to All Articles</a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 Ivan Larinin • Personal Portfolio & Blog</p>
+    </div>
+  </footer>
+
+  <!-- Interactive Scripts -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
