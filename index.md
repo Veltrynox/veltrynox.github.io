@@ -1,18 +1,19 @@
 ---
 layout: default
-title: Ivan Larinin | Tools, Pipeline & Systems Portfolio
+title: Ivan Larinin | Technical Artist & Pipeline Tools Developer
 ---
 
-<!-- Hero Section -->
+<!-- Hero Section: Front-Loaded Value Proposition -->
 <section class="hero">
-  <div class="hero-badge">🛠️ Tools, Pipeline &amp; Systems Development</div>
-  <h1 class="hero-title">Hi, I'm <span class="hero-title-gradient">Ivan Larinin</span></h1>
+  <h1 class="hero-title">
+    <span class="hero-title-gradient">Unreal Engine Pipeline &amp; Editor Tools</span>
+  </h1>
   <p class="hero-subtitle">
-    Developing custom editor extensions, DCC procedural tools in Houdini and C++, and real-time graphics pipelines for Unreal Engine and Unity.
+    <strong style="color: var(--text-primary); font-size: 1.25rem; display: block; margin-bottom: 0.5rem;">I build the systems that help teams ship.</strong>
+    Specializing in custom Unreal Engine C++ editor plugins and pipeline tooling.
   </p>
   <div class="hero-links">
     <a href="https://github.com/Veltrynox" target="_blank" rel="noopener" class="btn btn-primary">📂 GitHub Profile</a>
-    <a href="https://www.artstation.com/ivanlarinin" target="_blank" rel="noopener" class="btn btn-secondary">🎨 ArtStation</a>
     <a href="blog.html" class="btn btn-secondary">📝 Technical Blog</a>
     <a href="{{ '/assets/Ivan_Larinin_Resume.pdf' | relative_url }}" download="Ivan_Larinin_Resume.pdf" class="btn btn-secondary">📄 Download Resume (PDF)</a>
     <a href="mailto:ilarin75@gmail.com" class="btn btn-secondary">✉️ Get In Touch</a>
@@ -233,128 +234,4 @@ title: Ivan Larinin | Tools, Pipeline & Systems Portfolio
 
   </div>
 
-</section>
-
-<!-- SECTION 3: Gameplay Prototypes & Tinkering -->
-<section id="gameplay" style="margin-bottom: 4.5rem;">
-  
-  <div class="section-header">
-    <h2 class="section-title">
-      <span class="section-title-icon">🕹️</span> Gameplay Prototypes &amp; Tinkering
-    </h2>
-  </div>
-
-  <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.05rem;">
-    Playable prototypes and game mechanics built to explore game feel, systems architecture, and core engine features.
-  </p>
-
-  <div class="grid" style="margin-bottom: 2.5rem;">
-
-    <!-- IronClash (Tower Defense) -->
-    <div class="card">
-      <div class="card-media">
-        <span class="card-media-badge">PROTOTYPE</span>
-        <img src="{{ '/assets/media/ironclash.png' | relative_url }}" alt="IronClash Gameplay" loading="lazy">
-      </div>
-      <div class="card-body">
-        <h3 class="card-title">IronClash (Tower Defense)</h3>
-        <p class="card-description">
-          Strategic 3D tower defense game with grid placement, wave management, dynamic projectile physics, and upgrade systems.
-        </p>
-        <div class="card-tags">
-          <span class="tag tag-unity">Unity 3D</span>
-          <span class="tag tag-csharp">C#</span>
-          <span class="tag">Tower Defense</span>
-        </div>
-        <div class="card-footer">
-          <a href="https://github.com/Veltrynox/tower_defence" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">📂 Code</a>
-          <a href="https://veltrynox.itch.io/ironclash-alpha" target="_blank" rel="noopener" class="btn btn-primary btn-sm">🎮 Play Game</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Space Shooter -->
-    <div class="card">
-      <div class="card-media">
-        <span class="card-media-badge">PROTOTYPE</span>
-        <img src="https://raw.githubusercontent.com/Veltrynox/space_shooter/main/media/output.gif" alt="Space Shooter Gameplay" loading="lazy">
-      </div>
-      <div class="card-body">
-        <h3 class="card-title">Space Shooter</h3>
-        <p class="card-description">
-          2D space action prototype featuring responsive player ship controllers, projectile pooling systems, and enemy wave patterns.
-        </p>
-        <div class="card-tags">
-          <span class="tag tag-unity">Unity 2D</span>
-          <span class="tag tag-csharp">C#</span>
-          <span class="tag">Object Pooling</span>
-        </div>
-        <div class="card-footer">
-          <a href="https://github.com/Veltrynox/space_shooter" target="_blank" rel="noopener" class="btn btn-primary btn-sm">📂 Source Code</a>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Collapsible Prototypes Archive -->
-  <details class="archive-toggle" open>
-    <summary>Additional Gameplay Prototypes &amp; Experiments (8 Prototypes)</summary>
-    <div class="archive-grid">
-      <div class="archive-item">
-        <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/helixjump/images/gameplay.gif" alt="Helix Jump" loading="lazy">
-        <p>Helix Jump</p>
-      </div>
-      <div class="archive-item">
-        <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/ball_blast/content/gameplay.gif" alt="Ball Blast" loading="lazy">
-        <p>Ball Blast</p>
-      </div>
-      <div class="archive-item">
-        <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/adventure.gif" alt="Adventure" loading="lazy">
-        <p>Adventure</p>
-      </div>
-      <div class="archive-item">
-        <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/arkanoid.gif" alt="Arkanoid" loading="lazy">
-        <p>Arkanoid / Breakout</p>
-      </div>
-      <div class="archive-item">
-        <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/pacman.gif" alt="Pacman" loading="lazy">
-        <p>Pacman</p>
-      </div>
-      <div class="archive-item">
-        <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/tictactoe_gameplay.png" alt="Tic Tac Toe" loading="lazy">
-        <p>Tic Tac Toe</p>
-      </div>
-      <div class="archive-item">
-        <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/find_couple.gif" alt="Find Couple" loading="lazy">
-        <p>Find Couple</p>
-      </div>
-      <div class="archive-item">
-        <img src="https://raw.githubusercontent.com/Veltrynox/gamedev_course_homework_archive/main/content/pong_banner.jpg" alt="Pong" loading="lazy">
-        <p>Pong</p>
-      </div>
-    </div>
-    <div style="text-align: center; margin-top: 1.5rem;">
-      <a href="https://github.com/Veltrynox/gamedev_course_homework_archive" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">
-        📂 View Full Homework Archive on GitHub
-      </a>
-    </div>
-  </details>
-
-</section>
-
-<!-- SECTION 4: Contact Section -->
-<section id="contact">
-  <div class="contact-card">
-    <h2 class="contact-title">Let's Connect</h2>
-    <p class="contact-desc">
-      Interested in tools, pipeline workflows, or collaboration? Feel free to reach out directly.
-    </p>
-    <div class="contact-links">
-      <a href="mailto:ilarin75@gmail.com" class="btn btn-secondary">✉️ ilarin75@gmail.com</a>
-      <a href="https://github.com/Veltrynox" target="_blank" rel="noopener" class="btn btn-primary">📂 GitHub</a>
-      <a href="https://www.artstation.com/ivanlarinin" target="_blank" rel="noopener" class="btn btn-secondary">🎨 ArtStation</a>
-      <a href="{{ '/assets/Ivan_Larinin_Resume.pdf' | relative_url }}" download="Ivan_Larinin_Resume.pdf" class="btn btn-secondary">📄 Download Resume (PDF)</a>
-    </div>
-  </div>
 </section>
