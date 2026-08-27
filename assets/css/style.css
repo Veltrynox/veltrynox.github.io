@@ -925,3 +925,35 @@ img, video {
   margin-bottom: 0.4rem !important;
 }
 
+/* Post Content Tables */
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0 2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.post-content th, .post-content td {
+  padding: 0.85rem 1.25rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.post-content th {
+  background: rgba(255, 255, 255, 0.04);
+  font-weight: 700;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-active);
+}
+
+.post-content tr:last-child td {
+  border-bottom: none;
+}
+
+.post-content tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
