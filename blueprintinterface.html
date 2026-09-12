@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Interfaces in UE5: Connecting C++ StateTree Tasks to Blueprints | Ivan Larinin</title>
+  <meta name="description" content="A short example of calling a Blueprint door event from a C++ StateTree task using a custom UE5 interface, with code and a video demo.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Sticky Glassmorphic Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <span class="nav-brand-logo">IL</span>
+        <span class="nav-brand-text">IVAN LARININ</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="blog.html" class="btn btn-secondary btn-sm">📝 All Posts</a>
+        <a href="index.html" class="btn btn-secondary btn-sm">🏠 Portfolio</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+
+    <div class="article-container">
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <a href="blog.html">Blog</a>
+        <span>/</span>
+        <span>Custom Interfaces</span>
+      </nav>
+
+      <!-- Post Header -->
+      <header class="post-header">
+        <div class="article-meta" style="margin-bottom: 1rem;">
+          <span>📅 September 2026</span>
+          <span>•</span>
+          <span>⏱️ 2 min read</span>
+          <span>•</span>
+          <span class="tag tag-csharp" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.3);">Unreal Engine 5</span>
+          <span class="tag tag-cpp">C++</span>
+          <span class="tag tag-unity">Blueprints / StateTree</span>
+        </div>
+        <h1 class="post-title">Custom Interfaces in UE5: Connecting C++ StateTree Tasks to Blueprints</h1>
+      </header>
+
+      <!-- Post Content -->
+      <article class="post-content">
+
+<p>Hello, today I&#x27;ll show how to use custom UE interfaces for my StateTree. It&#x27;s probably an overly complex thing to do for such a simple task. But as part of learning more about the UE system, I don&#x27;t mind leaving it like that for now.</p>
+
+<p>In this example I&#x27;ll create an interface in C++ to call an event in my BP. It could be any actor BP, by the way, as long as it has this interface implemented. Here I&#x27;m using a door, and all I want to do is pass it an angle to rotate to.</p>
+
+<h2>The interface</h2>
+
+<p>First, here&#x27;s the interface. It has just one function, <code>SetDoorYaw</code>, which takes an angle in degrees.</p>
+
+<h3>DoorRotationInterface.h</h3>
+
+<div class="code-container"><div class="code-header"><span>C++</span></div><pre><code>#pragma once
+
+#include &quot;CoreMinimal.h&quot;
+#include &quot;UObject/Interface.h&quot;
+#include &quot;DoorRotationInterface.generated.h&quot;
+
+UINTERFACE(BlueprintType, Blueprintable)
+class NPC_SYSTEM_API UDoorRotationInterface : public UInterface
+{
+    GENERATED_BODY()
+};
+
+/** Contract for doors whose yaw can be set by gameplay code. */
+class NPC_SYSTEM_API IDoorRotationInterface
+{
+    GENERATED_BODY()
+
+public:
+    /** Apply the requested door angle, in degrees. */
+    UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = &quot;Door&quot;)
+    void SetDoorYaw(float Yaw);
+};</code></pre></div>
+
+<h2>The Blueprint side</h2>
+
+<p>In the Blueprint all you need to do is to create an event based on the interface class and make it call any other logic you want.</p>
+
+<figure style="margin: 2rem 0;"><a href="assets/media/UE_BlueprintInterface.png"><img src="assets/media/UE_BlueprintInterface.png" alt="BP_Door Event Graph: SetDoorYaw from Door Rotation Interface passes execution and Yaw to Apply Door Yaw" width="1271" height="799" style="width: 100%; height: auto; display: block; border-radius: var(--radius-md);"></a><figcaption>BP_Door implements the interface event and forwards the requested yaw. Select the image to view it at full size.</figcaption></figure>
+
+<h2>The StateTree task</h2>
+
+<p>I bind <code>DoorRef</code> to my door and set <code>TargetYaw</code>. Inside <code>EnterState</code>, the task gets its data, checks the actor, and calls the BP event:</p>
+
+<div class="code-container"><div class="code-header"><span>C++</span></div><pre><code>auto&amp; Data = Context.GetInstanceData(*this);
+if (!IsValid(Data.DoorRef) ||
+    !Data.DoorRef-&gt;GetClass()-&gt;ImplementsInterface(UDoorRotationInterface::StaticClass()))
+{
+    return EStateTreeRunStatus::Failed;
+}
+
+IDoorRotationInterface::Execute_SetDoorYaw(Data.DoorRef.Get(), Data.TargetYaw);
+return EStateTreeRunStatus::Succeeded;</code></pre></div>
+
+<p>Use the generated <code>Execute_</code> wrapper when calling a Blueprint interface event from C++; it routes the call to the BP implementation.</p>
+
+<p>Here&#x27;s the door in action:</p>
+
+<video controls loop muted playsinline preload="metadata" style="width: 100%; display: block; border-radius: var(--radius-md);">
+  <source src="assets/media/UE_DoorOpenClose.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+      </article>
+
+      <!-- Back to Blog Button -->
+      <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-light); text-align: center;">
+        <a href="blog.html" class="btn btn-primary">← Back to All Articles</a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 Ivan Larinin • Personal Portfolio & Blog</p>
+    </div>
+  </footer>
+
+  <!-- Interactive Scripts -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
