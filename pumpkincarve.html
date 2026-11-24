@@ -71,6 +71,8 @@
 
 <p>In this post I&#x27;ll explain what the game is, how it plays, and then go into the SDF carving and the candle glow, which were the fun parts.</p>
 
+<p style="margin: 1.5rem 0;"><a href="https://www.meta.com/experiences/carve-o-lantern/1497913296735641/" target="_blank" rel="noopener" class="btn btn-primary">🎃 Get Carve-o-Lantern on the Meta Horizon Store</a></p>
+
 <figure style="margin: 2rem 0;"><a href="assets/media/pumpkin_carve_cover.jpg"><img src="assets/media/pumpkin_carve_cover.jpg" alt="Carve-o-Lantern cover art" width="1600" height="900" loading="lazy" style="width: 100%; height: auto; display: block; border-radius: var(--radius-md);"></a><figcaption>Carve-o-Lantern cover art</figcaption></figure>
 
 <h2>The game</h2>
@@ -260,6 +262,12 @@ PlacedCandleLight-&gt;SetIntensity(0.22f * Flicker * FMath::Max(GlowAlpha, 0.2f)
 <p>For a weekend, an SDF was the right call. The core carving operation is a single <code>max</code>, and depth-limited tools, falling pieces, undo, small save files and the layered glow all came from keeping a second, untouched copy of the field next to the one you carve. The rest was making it run on a Quest: chunked async remeshing, tight tool bounds, and doing all the lighting work in vertex colours and one emissive term instead of real light transport.</p>
 
       </article>
+
+      <!-- Store Link -->
+      <div style="margin-top: 3rem; text-align: center;">
+        <p style="margin-bottom: 1rem;">Carve-o-Lantern is available for Meta Quest 2, Pro, 3 and 3S.</p>
+        <a href="https://www.meta.com/experiences/carve-o-lantern/1497913296735641/" target="_blank" rel="noopener" class="btn btn-primary">🎃 Get it on the Meta Horizon Store</a>
+      </div>
 
       <!-- Back to Blog Button -->
       <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-light); text-align: center;">

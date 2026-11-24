@@ -10,6 +10,8 @@ This was a weekend project: a small VR pumpkin carving game for Meta Quest (Ques
 
 In this post I'll explain what the game is, how it plays, and then go into the SDF carving and the candle glow, which were the fun parts.
 
+**[🎃 Get Carve-o-Lantern on the Meta Horizon Store](https://www.meta.com/experiences/carve-o-lantern/1497913296735641/)**
+
 ![Carve-o-Lantern cover art]({{ '/assets/media/pumpkin_carve_cover.jpg' | relative_url }})
 
 ## The game
@@ -211,3 +213,5 @@ When the candle goes in, the scene fades to night over a second or two: the sun 
 ## Wrapping up
 
 For a weekend, an SDF was the right call. The core carving operation is a single `max`, and depth-limited tools, falling pieces, undo, small save files and the layered glow all came from keeping a second, untouched copy of the field next to the one you carve. The rest was making it run on a Quest: chunked async remeshing, tight tool bounds, and doing all the lighting work in vertex colours and one emissive term instead of real light transport.
+
+Carve-o-Lantern is available for Meta Quest 2, Pro, 3 and 3S: **[get it on the Meta Horizon Store](https://www.meta.com/experiences/carve-o-lantern/1497913296735641/)**.

@@ -235,3 +235,41 @@ title: Ivan Larinin | Technical Artist & Pipeline Tools Developer
   </div>
 
 </section>
+
+<!-- SECTION 3: Released Games -->
+<section id="games" style="margin-bottom: 4.5rem;">
+
+  <div class="section-header">
+    <h2 class="section-title">
+      <span class="section-title-icon">🎮</span> Released Games
+    </h2>
+  </div>
+
+  <div class="grid" style="margin-bottom: 0;">
+
+    <!-- Carve-o-Lantern (Meta Quest VR) -->
+    <div class="card">
+      <a href="pumpkincarve.html" class="card-media" style="display: block;">
+        <span class="card-media-badge">META QUEST VR</span>
+        <img src="{{ '/assets/media/pumpkin_carve_cover.jpg' | relative_url }}" alt="Carve-o-Lantern VR pumpkin carving game" loading="lazy">
+      </a>
+      <div class="card-body">
+        <h3 class="card-title"><a href="pumpkincarve.html" style="color: inherit; text-decoration: none;">Carve-o-Lantern</a></h3>
+        <p class="card-description">
+          VR pumpkin carving game for Meta Quest built in Unreal Engine 5 C++. The pumpkin is a signed distance field carved with 25 tools, meshed with async surface nets, and lit from inside with a vertex-colour candle glow.
+        </p>
+        <div class="card-tags">
+          <span class="tag tag-cpp">Unreal Engine 5</span>
+          <span class="tag tag-shader">SDF</span>
+          <span class="tag tag-unity">Meta Quest</span>
+        </div>
+        <div class="card-footer">
+          <a href="pumpkincarve.html" class="btn btn-primary btn-sm">📝 Read Blog Post</a>
+          <a href="https://www.meta.com/experiences/carve-o-lantern/1497913296735641/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">🛒 Meta Horizon Store</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
