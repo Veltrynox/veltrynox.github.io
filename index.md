@@ -265,7 +265,7 @@ title: Ivan Larinin | Technical Artist & Pipeline Tools Developer
         </div>
         <div class="card-footer">
           <a href="pumpkincarve.html" class="btn btn-primary btn-sm">📝 Read Blog Post</a>
-          <a href="https://www.meta.com/experiences/carve-o-lantern/1497913296735641/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">🛒 Meta Horizon Store</a>
+          <a href="https://www.meta.com/experiences/carve-o-lantern/1497913296735641/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">🛒 Meta Store</a>
         </div>
       </div>
     </div>
